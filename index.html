@@ -421,6 +421,7 @@ tl.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const s
 let start="sun";const hash=(location.hash||"").slice(1);
 if(DAYS.some(d=>d.id===hash))start=hash;else{try{const v=localStorage.getItem("tokyo-day");if(v&&DAYS.some(d=>d.id===v))start=v}catch(e){}}
 map.on("load",()=>setDay(start));
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h!==day.id&&DAYS.some(d=>d.id===h))setDay(h)});
 buildTabs();
 </script>
 
