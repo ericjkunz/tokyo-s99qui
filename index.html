@@ -160,7 +160,8 @@ a.nm:hover{border-bottom-color:currentColor}
 .ex .note{font-size:13.5px;margin-top:2px}
 .ex .gm2{font-size:12.5px;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
 .maplibregl-ctrl-attrib{font-size:10.5px}
-.pinm{position:relative;width:34px;height:34px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:18px;line-height:1;border:2.5px solid var(--accent);box-shadow:0 1px 5px rgba(0,0,0,.3);cursor:pointer;transition:opacity .2s;padding:0}
+.me-dot{width:16px;height:16px;border-radius:50%;background:#1a73e8;border:3px solid #fff;box-shadow:0 0 0 6px rgba(26,115,232,.25),0 1px 4px rgba(0,0,0,.4);pointer-events:none}
+.pinm{width:34px;height:34px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:18px;line-height:1;border:2.5px solid var(--accent);box-shadow:0 1px 5px rgba(0,0,0,.3);cursor:pointer;transition:opacity .2s;padding:0}
 .pinm .num{position:absolute;top:-7px;right:-9px;min-width:17px;height:17px;border-radius:9px;background:var(--accent);color:var(--pin-ink);font:500 10.5px/17px var(--f-mono);text-align:center;padding:0 3px;box-shadow:0 0 0 2px var(--panel)}
 .pinm.hotel{border-color:var(--ink)}
 .pinm.sel{outline:3px solid var(--ink);outline-offset:1px}
@@ -246,6 +247,10 @@ const S={
  FAMILIAR:{n:"familiar Daikanyama",a:"Daikanyama Plaza 2F · Sarugakucho",lat:35.64825,lng:139.70163,q:"familiar Daikanyama"},
  KBEAMS:{n:"Kodomo BEAMS",a:"Sarugakucho, Daikanyama",lat:35.64897,lng:139.70076,q:"Kodomo BEAMS Daikanyama"},
  MARKEYS:{n:"MARKEY'S Daikanyama",a:"Daikanyama Address Dixsept 3F",lat:35.64938,lng:139.70252,q:"MARKEY'S 代官山アドレス・ディセ店"},
+ KAGARI:{n:"Ginza Kagari (Honten)",a:"Ginza 6-4-12",lat:35.6712019,lng:139.7613315,q:"Ginza Kagari Soba 6-4-12 Ginza"},
+ HARUCHAN:{n:"Ginza Haruchan Ramen",a:"Ginza 3-11-6",lat:35.6708476,lng:139.7688332,q:"Ginza Haruchan Ramen 3-11-6 Ginza"},
+ IRUCA:{n:"Iruca Tokyo Roppongi",a:"Roppongi 4-12-12",lat:35.6648012,lng:139.7316413,q:"Iruca Tokyo Roppongi 4-12-12"},
+ TORISHIGE:{n:"Torishige",a:"Yoyogi 2-6-5",lat:35.6879695,lng:139.698852,q:"Torishige 2-6-5 Yoyogi Shibuya"},
  RIBERA:{n:"Ribera Meguro",a:"Shimomeguro 6-chome",lat:35.62903,lng:139.69732,q:"Ribera Meguro steakhouse"},
  HOTEL:{n:"InterContinental the Strings",a:"Shinagawa East One Tower · lobby 26F",lat:35.62925,lng:139.74180,q:"InterContinental Tokyo The Strings Shinagawa"},
  MOMO:{n:"Momotaro Jeans Aoyama",a:"Kita-Aoyama · Ao Building 1–2F",lat:35.66630,lng:139.71250,q:"MOMOTARO JEANS Aoyama"},
@@ -364,9 +369,15 @@ const DAYS=[
   ]}
 ];
 
-const EMO={"HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩"};
+const EMO={"HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢"};
 for(const k in S)S[k].e=EMO[k]||"📍";
 const EXTRAS=[
+ {cat:"Walk-in dinners (Michelin)",items:[
+  {s:"KAGARI",tag:"Bib Gourmand · Mon",note:"Former Michelin Bib Gourmand; famous creamy tori-paitan (chicken) soba. No reservations, just queue (ticket machine, from about ¥1,500). Google Maps: Sun 11:00–21:30, Mon 11:00–22:00. A 5 PM arrival usually means a short wait. Fully casual."},
+  {s:"HARUCHAN",tag:"Bib Gourmand 2026 · Sun/Mon",note:"Bib Gourmand in the 2026 Michelin Guide. Light, clear shio (salt) ramen in a small Ginza shop. Counter seating and casual; walk in and wait in line. Michelin lists it open daily 11:00–19:00 and Google Maps shows until 21:00, so aim to arrive before 7 PM."},
+  {s:"IRUCA",tag:"Bib Gourmand 2026 · Sun",note:"Bib Gourmand in the 2026 Michelin Guide. Inventive ramen: clam and spiny-lobster broths, a shoyu bowl with porcini and truffle. Counter seating, cards accepted, walk-in queue. Open daily 11:00–19:40; closed Mondays. Easy from Ukai-tei or the hotel on Sunday, or as an early dinner."},
+  {s:"TORISHIGE",tag:"Bib Gourmand 2026 · Mon",note:"Bib Gourmand in the 2026 Michelin Guide. A postwar yakitori stall turned pork-and-beef skewer counter, a 5-minute walk from Shinjuku South exit. Fits Monday after Isetan or Nakano. Mon 17:00–24:00; closed Sundays. Cash only. Counter seats go to walk-ins at opening; it takes phone bookings (+81 3-3379-5188) and fills by 6, so arrive right at 5."}
+ ]},
  {cat:"Dinner backups",items:[
   {s:"MASASHI",tag:"Mon alternative",note:"Michelin-starred sushi. Dinner seatings 17:30 and 20:00; closed Wednesdays and Sundays. OMAKASE takes same-day bookings made by noon."},
   {s:"RIBERA",tag:"Sun only",note:"Your pick. Famous casual steakhouse, ¥3,000–6,000. Dinner 5–11 PM; closed Mondays and Tuesdays, so Sunday is the only night it works on this trip."},
@@ -427,6 +438,8 @@ const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim
 const map=new maplibregl.Map({container:"map",style:styleURL(),center:[139.72,35.66],zoom:12,attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
 map.touchZoomRotate.disableRotation();
 map.addControl(new maplibregl.NavigationControl({showCompass:false}),"top-right");
+const geo=new maplibregl.GeolocateControl({positionOptions:{enableHighAccuracy:true},trackUserLocation:true,showUserLocation:true,showAccuracyCircle:true,fitBoundsOptions:{maxZoom:15}});
+map.addControl(geo,"top-right");
 map.on("error",e=>{if(isDark()&&String(e.error&&e.error.message||"").includes("dark"))map.setStyle("https://tiles.openfreemap.org/styles/positron")});
 
 function curve(a,b){ // gentle arc between two [lng,lat]
@@ -547,7 +560,12 @@ tl.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const s
 
 let start="sun";const hash=(location.hash||"").slice(1);
 if(DAYS.some(d=>d.id===hash))start=hash;else{try{const v=localStorage.getItem("tokyo-day");if(v&&DAYS.some(d=>d.id===v))start=v}catch(e){}}
-map.on("load",()=>{buildExtras();setDay(start)});
+map.on("load",()=>{buildExtras();setDay(start);
+ // Ask for location once; show the blue dot without stealing the day's view.
+ if(navigator.geolocation){let me=null;navigator.geolocation.watchPosition(p=>{const ll=[p.coords.longitude,p.coords.latitude];
+  if(!me){const el=document.createElement("div");el.className="me-dot";el.title="You are here";me=new maplibregl.Marker({element:el}).setLngLat(ll).addTo(map);}else me.setLngLat(ll);
+ },()=>{},{enableHighAccuracy:true,maximumAge:15000,timeout:20000});}
+});
 window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h!==day.id&&DAYS.some(d=>d.id===h))setDay(h)});
 buildTabs();
 </script>
