@@ -137,9 +137,11 @@ ol.tl{list-style:none;margin:0;padding:0}
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <style>
 #map{position:absolute;inset:0}
-.pinx{width:13px;height:13px;border-radius:50%;background:var(--panel);border:2.5px solid var(--muted);box-shadow:0 1px 3px rgba(0,0,0,.25);cursor:pointer;padding:0}
+.pinx{width:24px;height:24px;border-radius:50%;background:color-mix(in srgb,var(--panel) 85%,transparent);border:1.5px dashed var(--muted);display:grid;place-items:center;font-size:12.5px;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:pointer;padding:0;opacity:.85}
 .pinx.closed{border-color:var(--taxi);background:var(--bg)}
-.pinx.sel{width:17px;height:17px;border-color:var(--ink)}
+.pinx.sel{width:30px;height:30px;font-size:16px;border-style:solid;border-color:var(--ink);opacity:1}
+.pinx.closed{filter:grayscale(.7)}
+.emo{margin-right:6px}
 a.nm{color:inherit;text-decoration:none;border-bottom:1px solid var(--hair)}
 a.nm:hover{border-bottom-color:currentColor}
 .pop a{color:var(--accent)}
@@ -158,8 +160,9 @@ a.nm:hover{border-bottom-color:currentColor}
 .ex .note{font-size:13.5px;margin-top:2px}
 .ex .gm2{font-size:12.5px;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor}
 .maplibregl-ctrl-attrib{font-size:10.5px}
-.pinm{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--pin-ink);display:grid;place-items:center;font:500 12px var(--f-mono);border:2.5px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer;transition:opacity .2s}
-.pinm.hotel{background:var(--ink);color:var(--bg)}
+.pinm{position:relative;width:34px;height:34px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:18px;line-height:1;border:2.5px solid var(--accent);box-shadow:0 1px 5px rgba(0,0,0,.3);cursor:pointer;transition:opacity .2s;padding:0}
+.pinm .num{position:absolute;top:-7px;right:-9px;min-width:17px;height:17px;border-radius:9px;background:var(--accent);color:var(--pin-ink);font:500 10.5px/17px var(--f-mono);text-align:center;padding:0 3px;box-shadow:0 0 0 2px var(--panel)}
+.pinm.hotel{border-color:var(--ink)}
 .pinm.sel{outline:3px solid var(--ink);outline-offset:1px}
 .pinm.dim{opacity:.35}
 .maplibregl-popup-content{background:var(--panel);color:var(--ink);font:13px var(--f-body);border-radius:10px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
@@ -203,10 +206,10 @@ const S={
  MAISEN:{n:"Tonkatsu Maisen Aoyama",a:"Jingumae",lat:35.6693,lng:139.7106,q:"Tonkatsu Maisen Aoyama Honten"},
  PBJ:{n:"Pure Blue Japan",a:"Jingumae",lat:35.6731,lng:139.7083,q:"Pure Blue Japan Jingumae Tokyo"},
  KANEKO:{n:"Kaneko Gankyo-ten Aoyama",a:"Minami-Aoyama 3-chome",lat:35.66557,lng:139.71321,q:"金子眼鏡店 青山店"},
- AURALEE:{n:"Auralee Tokyo",a:"Minami-Aoyama",lat:35.6618,lng:139.7152,q:"AURALEE TOKYO Minami Aoyama"},
+ AURALEE:{n:"Auralee Tokyo",a:"Minami-Aoyama",lat:35.66116,lng:139.71641,q:"AURALEE TOKYO Minami Aoyama"},
  KAPTAIN:{n:"Kaptain Sunshine",a:"Minami-Aoyama",lat:35.6603,lng:139.7140,q:"KAPTAIN SUNSHINE AOYAMA"},
  JMM:{n:"Jacques Marie Mage",a:"Jingumae 5-chome",lat:35.66698,lng:139.70703,q:"Jacques Marie Mage Omotesando Tokyo Gallery"},
- SNOW:{n:"Snow Peak Omotesando",a:"Jingumae",lat:35.6684,lng:139.7038,q:"Snow Peak Omotesando"},
+ SNOW:{n:"Snow Peak Omotesando",a:"Jingumae",lat:35.66759,lng:139.70597,q:"Snow Peak Omotesando"},
  PARA:{n:"Paraboot",a:"Minami-Aoyama 6-chome",lat:35.66070,lng:139.71499,q:"Paraboot Minami Aoyama"},
  D2121:{n:"21_21 Design Sight",a:"Tokyo Midtown garden · Roppongi",lat:35.66752,lng:139.73052,q:"21_21 Design Sight"},
  KARI:{n:"Karimoku Research Center",a:"Nishi-Azabu 2-chome",lat:35.66138,lng:139.72109,q:"KARIMOKU RESEARCH CENTER Nishiazabu"},
@@ -231,8 +234,6 @@ const S={
  TACUBO:{n:"Dolce Tacubo Ginza",a:"Ginza",lat:35.66832,lng:139.76349,q:"DOLCE TACUBO GINZA"},
  TENRYU:{n:"Ginza Tenryu",a:"Ginza 2-chome",lat:35.67422,lng:139.76692,q:"Ginza Tenryu"},
  OBORO:{n:"Ginza Oborodzuki",a:"Ginza",lat:35.67122,lng:139.76135,q:"Ginza Oborodzuki"},
- AURALEE:{n:"Auralee Tokyo",a:"Minami-Aoyama 6-chome",lat:35.66116,lng:139.71641,q:"AURALEE TOKYO Minami Aoyama"},
- SNOW:{n:"Snow Peak Omotesando",a:"Jingumae 6-chome",lat:35.66759,lng:139.70597,q:"Snow Peak Omotesando"},
  MONTBELL:{n:"mont-bell Kyobashi",a:"Kyobashi",lat:35.67595,lng:139.76880,q:"mont-bell Tokyo Kyobashi"},
  HINOYA:{n:"Hinoya",a:"Ameyoko, Ueno",lat:35.70920,lng:139.77410,q:"Hinoya Ameyoko Ueno"},
  BEAMS:{n:"BEAMS Shinjuku",a:"Shinjuku 3-chome",lat:35.69022,lng:139.70159,q:"BEAMS Shinjuku"},
@@ -240,12 +241,15 @@ const S={
  NEZU:{n:"Nezu Museum",a:"Minami-Aoyama 6-chome",lat:35.66226,lng:139.71709,q:"Nezu Museum"},
  MSC:{n:"Mont St. Clair",a:"Jiyugaoka",lat:35.61272,lng:139.66648,q:"Mont St.Clair Jiyugaoka"},
  BEARS:{n:"Bears",a:"Shimokitazawa",lat:35.66201,lng:139.66876,q:"Bears ベアーズ Shimokitazawa"},
- BONPOINT:{n:"Bonpoint Ginza",a:"Ginza 7-chome",lat:35.66970,lng:139.76200,q:"Bonpoint Ginza"},
- MITSU:{n:"Ginza Mitsukoshi",a:"Ginza 4-chome",lat:35.67110,lng:139.76530,q:"Ginza Mitsukoshi"},
+ BONPOINT:{n:"Bonpoint Ginza",a:"Ginza 7-chome",lat:35.6697,lng:139.762,q:"Bonpoint Ginza"},
+ MITSU:{n:"Ginza Mitsukoshi",a:"Ginza 4-chome",lat:35.6711,lng:139.7653,q:"Ginza Mitsukoshi"},
+ FAMILIAR:{n:"familiar Daikanyama",a:"Daikanyama Plaza 2F · Sarugakucho",lat:35.64825,lng:139.70163,q:"familiar Daikanyama"},
+ KBEAMS:{n:"Kodomo BEAMS",a:"Sarugakucho, Daikanyama",lat:35.64897,lng:139.70076,q:"Kodomo BEAMS Daikanyama"},
+ MARKEYS:{n:"MARKEY'S Daikanyama",a:"Daikanyama Address Dixsept 3F",lat:35.64938,lng:139.70252,q:"MARKEY'S 代官山アドレス・ディセ店"},
+ RIBERA:{n:"Ribera Meguro",a:"Shimomeguro 6-chome",lat:35.62903,lng:139.69732,q:"Ribera Meguro steakhouse"},
  HOTEL:{n:"InterContinental the Strings",a:"Shinagawa East One Tower · lobby 26F",lat:35.62925,lng:139.74180,q:"InterContinental Tokyo The Strings Shinagawa"},
  MOMO:{n:"Momotaro Jeans Aoyama",a:"Kita-Aoyama · Ao Building 1–2F",lat:35.66630,lng:139.71250,q:"MOMOTARO JEANS Aoyama"},
  DART:{n:"Studio D'artisan Tokyo",a:"Jingumae 6-chome",lat:35.66663,lng:139.70560,q:"Studio D'artisan Tokyo Jingumae"},
- BEARS:{n:"Bears",a:"Shimokitazawa · Marché Shimokitazawa",lat:35.66201,lng:139.66876,q:"Bears ベアーズ Shimokitazawa"},
  PICKUP:{n:"Pick up hemmed jeans",a:"Studio D'artisan",lat:35.66663,lng:139.70560,q:"Studio D'artisan Tokyo Jingumae"},
  BLINC:{n:"blinc",a:"Gaienmae · eyewear",lat:35.67030,lng:139.71920,q:"blinc Gaienmae Minami Aoyama"},
  IMAI:{n:"Yakitori Imai",a:"Jingumae 3-chome · or Sushi Masashi nearby",lat:35.67170,lng:139.71220,q:"Yakitori Imai Jingumae"},
@@ -256,8 +260,6 @@ const S={
  HERMES:{n:"Maison Hermès Ginza",a:"Sukiyabashi",lat:35.6714,lng:139.7631,q:"Ginza Maison Hermès"},
  G6:{n:"GINZA SIX",a:"The Row 3F · Dior · Celine · Loewe",lat:35.6697,lng:139.7640,q:"GINZA SIX"},
  DSM:{n:"Dover Street Market Ginza",a:"Kaneko Ginza is next door",lat:35.6704,lng:139.7651,q:"Dover Street Market Ginza"},
- BONPOINT:{n:"Bonpoint Ginza",a:"Kojunsha-dori",lat:35.6689,lng:139.7618,q:"Bonpoint Ginza"},
- MITSU:{n:"Ginza Mitsukoshi",a:"Kids floor · Familiar shop",lat:35.6711,lng:139.7660,q:"Ginza Mitsukoshi"},
  ISETAN:{n:"Isetan Shinjuku",a:"Shinjuku-sanchome",lat:35.6918,lng:139.7047,q:"Isetan Shinjuku"},
  NAKANO:{n:"Nakano Broadway",a:"Nakano",lat:35.7095,lng:139.6658,q:"Nakano Broadway"},
  MASASHI:{n:"Sushi Masashi",a:"Kita-Aoyama 2-chome",lat:35.67139,lng:139.71671,q:"Sushi Masashi Kita Aoyama"},
@@ -332,22 +334,28 @@ const DAYS=[
    {m:"taxi",min:25,how:"Eric: taxi from Nakano Station. She comes from Isetan by taxi, about 15 min.",via:"driving",who:"Both"},
    {m:"walk",min:12,how:"West along the Gaien-nishi-dori side streets into Jingumae 3-chome."}
   ]},
- {id:"tue",tab:"Tue",date:"Oct 20",title:"Jiyugaoka, Dior, design stops, out by 5:15",
+ {id:"tue",tab:"Tue",date:"Oct 20",title:"Jiyugaoka, Daikanyama kids' shops, Dior, design stops",
   stops:[
    {s:"HOTEL",t:"10:15",note:"Check out and leave bags with the 26F front desk until the afternoon."},
    {s:"MOON",t:"11:00",note:"MOONSTAR opens 11:00. IDÉE next door opens 11:30 on weekdays."},
-   {s:"KATA",t:"11:40",note:"Japanese gifts and souvenirs. Opens 11:00."},
-   {s:"DIOR",t:"12:30",note:"Open 11:00–19:00. Book Café Dior online by 11 PM Monday for a 1:15 lunch."},
-   {s:"KARI",t:"2:40",note:"Karimoku's design gallery. Weekdays 1:00–6:00 PM, no reservation needed, so today is the day."},
-   {s:"FAMIMA",t:"3:25",note:"FamilyMart's flagship. Open 6:00–1:00 daily."},
-   {s:"MON",t:"3:55",note:"Open today; it only closes on the 2nd Tuesday."},
-   {s:"HOTEL",t:"4:50",note:"Collect bags from the front desk. Leave by 5:15."},
+   {s:"KATA",t:"11:35",note:"Japanese gifts and souvenirs. Opens 11:00."},
+   {s:"FAMILIAR",t:"12:15",note:"Your pick. Classic Japanese babywear, good for your sister's new baby. Open daily 11:00–19:00."},
+   {s:"KBEAMS",t:"12:35",note:"Your pick. BEAMS' kids' shop, two minutes away. Open daily 10:00–19:00."},
+   {s:"MARKEYS",t:"12:55",note:"Your pick. Kids' clothing on 3F of Daikanyama Address, by the station. Open daily 11:00–20:00."},
+   {s:"DIOR",t:"1:15",note:"Open 11:00–19:00. Book Café Dior online by 11 PM Monday for a 1:30 lunch."},
+   {s:"KARI",t:"3:00",note:"Karimoku's design gallery. Weekdays 1:00–6:00 PM, no reservation needed, so today is the day."},
+   {s:"FAMIMA",t:"3:40",note:"FamilyMart's flagship. Open 6:00–1:00 daily."},
+   {s:"MON",t:"4:05",note:"Open today; it only closes on the 2nd Tuesday. Keep it short."},
+   {s:"HOTEL",t:"4:55",note:"Collect bags from the front desk. Leave by 5:15."},
    {s:"HND",t:"5:45",note:"Flight at 8:05 PM. Check your boarding pass for the terminal."}
   ],
   legs:[
    {m:"train",min:25,how:"JR Keihin-Tohoku one stop to Oimachi, then the Tokyu Oimachi line express to Jiyugaoka. Taxi is about 25 min."},
    {m:"walk",min:5,how:"South across the tracks to Okusawa."},
-   {m:"train",min:20,how:"Tokyu Toyoko line local from Jiyugaoka to Daikanyama (5 stops, about 12 min), then a 7 min walk to Sarugakucho."},
+   {m:"train",min:20,how:"Tokyu Toyoko line local from Jiyugaoka to Daikanyama (5 stops, about 12 min), then a 4 min walk to Sarugakucho."},
+   {m:"walk",min:3,how:"Along Kyu-Yamate-dori."},
+   {m:"walk",min:4,how:"Back toward Daikanyama station; Address Dixsept is the low building next to it."},
+   {m:"walk",min:7,how:"Back out to Kyu-Yamate-dori and along to Sarugakucho 8."},
    {m:"taxi",min:12,how:"Taxi via Komazawa-dori and Roppongi-dori to Nishi-Azabu.",via:"driving"},
    {m:"taxi",min:8,how:"Short taxi east past Azabudai Hills to Kamiyacho. Walking is about 25 min.",via:"driving"},
    {m:"taxi",min:15,how:"Taxi south via Sakurada-dori and Daiichi Keihin to Takanawa Gateway City.",via:"driving"},
@@ -356,9 +364,12 @@ const DAYS=[
   ]}
 ];
 
+const EMO={"HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩"};
+for(const k in S)S[k].e=EMO[k]||"📍";
 const EXTRAS=[
  {cat:"Dinner backups",items:[
   {s:"MASASHI",tag:"Mon alternative",note:"Michelin-starred sushi. Dinner seatings 17:30 and 20:00; closed Wednesdays and Sundays. OMAKASE takes same-day bookings made by noon."},
+  {s:"RIBERA",tag:"Sun only",note:"Your pick. Famous casual steakhouse, ¥3,000–6,000. Dinner 5–11 PM; closed Mondays and Tuesdays, so Sunday is the only night it works on this trip."},
   {s:"TENSHIBUYA",tag:"Easy same-day",note:"Dinner omakase ¥9,900, or ¥13,200 with drinks. Same-day bookings by phone: 03-6427-5076."},
   {s:"SATORU",tag:"Not Sunday",note:"Michelin-listed omakase. Closed Sundays; Monday to Friday from 17:30. Could replace Monday's dinner."},
   {s:"YOKOTA",tag:"Cancellations only",note:"One-star tempura from your Eats list. Your note says seatings at 5:30 and 8:30, open Sunday and Monday, about ¥26,000. I didn't re-check its hours."},
@@ -454,7 +465,7 @@ function buildMarkers(){
   markers.forEach(m=>m.remove());markers=[];
   day.stops.forEach((st,i)=>{const p=S[st.s];
     // stacked duplicates (same place twice in a day): offset slightly
-    const el=document.createElement("button");el.className="pinm"+(st.s==="HOTEL"?" hotel":"");el.textContent=st.s==="HOTEL"?"H":i+1;
+    const el=document.createElement("button");el.className="pinm"+(st.s==="HOTEL"?" hotel":"");el.innerHTML=`<span aria-hidden="true">${p.e}</span>`+(st.s==="HOTEL"?"":`<span class="num">${i+1}</span>`);
     el.setAttribute("aria-label",(i+1)+". "+p.n);
     el.addEventListener("click",ev=>{ev.stopPropagation();choose("stop",i,true)});
     markers.push(new maplibregl.Marker({element:el}).setLngLat([p.lng,p.lat]).addTo(map));});
@@ -475,7 +486,7 @@ function buildList(){
   document.getElementById("totals").innerHTML=Object.keys(tot).filter(k=>tot[k]).map(k=>`<i><span class="sw ${k}"></span>${tot[k]} min</i>`).join("");
   let h="";
   day.stops.forEach((st,i)=>{const p=S[st.s];
-    h+=`<li class="stop" tabindex="0" data-stop="${i}" id="st-${i}"><div class="pin">${st.s==="HOTEL"?"H":i+1}</div><div><div class="t">${st.t}</div><div class="n"><a class="nm" href="${gmPlace(p)}" target="_blank" rel="noopener">${esc(p.n)}</a>${st.who?`<span class="who">${st.who}</span>`:""}</div><div class="a">${esc(p.a)}</div><div class="note">${esc(st.note)}</div></div></li>`;
+    h+=`<li class="stop" tabindex="0" data-stop="${i}" id="st-${i}"><div class="pin">${st.s==="HOTEL"?"H":i+1}</div><div><div class="t">${st.t}</div><div class="n"><span class="emo" aria-hidden="true">${p.e}</span><a class="nm" href="${gmPlace(p)}" target="_blank" rel="noopener">${esc(p.n)}</a>${st.who?`<span class="who">${st.who}</span>`:""}</div><div class="a">${esc(p.a)}</div><div class="note">${esc(st.note)}</div></div></li>`;
     const lg=day.legs[i];
     if(lg){const b=S[day.stops[i+1].s];
       h+=`<li class="leg ${lg.m}" tabindex="0" data-leg="${i}" id="lg-${i}"><div class="rail"><i></i></div><div class="body"><div class="head"><span class="chip">${modeName[lg.m]}</span><span class="mins">~${lg.min} min</span>${lg.who&&lg.who!=="Both"?`<span class="who" style="margin:0">${lg.who}</span>`:""}<a class="gm" href="${mapsURL(p,b,modeVia(lg.m))}" target="_blank" rel="noopener">Directions</a></div><div class="how">${esc(lg.how)}</div></div></li>`;}
@@ -502,10 +513,10 @@ function buildExtras(){
   let h=`<h3>Other places I found</h3><p class="sub"><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;border:2.5px solid var(--muted)"></span>Small pins on the map. Not on the schedule; tap one to see it.</p>`;
   for(const g of EXTRAS){h+=`<h4>${esc(g.cat)}</h4>`;
     for(const it of g.items){const p=S[it.s];
-      h+=`<div class="ex" tabindex="0" data-ex="${it.s}" id="ex-${it.s}"><span class="dot${isClosed(it)?" closed":""}"></span><div><div class="n"><a class="nm" href="${gmPlace(p)}" target="_blank" rel="noopener">${esc(p.n)}</a><span class="tag">${esc(it.tag)}</span></div><div class="a">${esc(p.a)}</div><div class="note">${esc(it.note)}</div></div></div>`}}
+      h+=`<div class="ex" tabindex="0" data-ex="${it.s}" id="ex-${it.s}"><span class="dot${isClosed(it)?" closed":""}" style="border:0;width:auto;height:auto;margin-top:1px;font-size:15px">${p.e}</span><div><div class="n"><a class="nm" href="${gmPlace(p)}" target="_blank" rel="noopener">${esc(p.n)}</a><span class="tag">${esc(it.tag)}</span></div><div class="a">${esc(p.a)}</div><div class="note">${esc(it.note)}</div></div></div>`}}
   document.getElementById("extras").innerHTML=h;
   for(const g of EXTRAS)for(const it of g.items){const p=S[it.s];
-    const el=document.createElement("button");el.className="pinx"+(isClosed(it)?" closed":"");el.setAttribute("aria-label",p.n);el.title=p.n;
+    const el=document.createElement("button");el.className="pinx"+(isClosed(it)?" closed":"");el.textContent=p.e;el.setAttribute("aria-label",p.n);el.title=p.n;
     el.addEventListener("click",ev=>{ev.stopPropagation();chooseEx(it.s,true)});
     exMarkers[it.s]=new maplibregl.Marker({element:el}).setLngLat([p.lng,p.lat]).addTo(map);}
 }
