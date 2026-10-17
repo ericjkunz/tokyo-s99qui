@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Tokyo Trip Routes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}[hidden]{display:none!important}</style>
+<style>
+/* Layout: schematic rail-map on the left (sticky), stop-by-stop timeline on the right; stacks with a sticky map on phones */
+:root{
+  --bg:#ECEEE9; --panel:#F8F9F6; --ink:#1A1D23; --muted:#5B6270; --hair:#D3D7CF;
+  --land:#E3E6DE; --water:#C7DAE4; --park:#D1DFC5; --rail:#B4BAB1; --railtxt:#7A8079;
+  --accent:#2C43A6; --accent-soft:#DCE2F6; --taxi:#B86200; --walk:#4B5261; --pin-ink:#FFFFFF;
+  --road:#FFFFFF; --road-major:#FFFFFF; --road-case:#C9CDC4; --mw:#F2D9A6; --mw-case:#D7B676; --roadtxt:#6A6F66;
+  --f-display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101318; --panel:#161A21; --ink:#E7E9ED; --muted:#99A1AD; --hair:#29303A;
+  --land:#191E26; --water:#0D1B27; --park:#18261C; --rail:#39414D; --railtxt:#6F7886;
+  --accent:#93A8FF; --accent-soft:#222B4A; --taxi:#F0A243; --walk:#BCC3CF; --pin-ink:#0F1320;
+  --road:#262D37; --road-major:#323A46; --road-case:#12161C; --mw:#4A4232; --mw-case:#2A251C; --roadtxt:#7C8592; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101318; --panel:#161A21; --ink:#E7E9ED; --muted:#99A1AD; --hair:#29303A;
+  --land:#191E26; --water:#0D1B27; --park:#18261C; --rail:#39414D; --railtxt:#6F7886;
+  --accent:#93A8FF; --accent-soft:#222B4A; --taxi:#F0A243; --walk:#BCC3CF; --pin-ink:#0F1320;
+  --road:#262D37; --road-major:#323A46; --road-case:#12161C; --mw:#4A4232; --mw-case:#2A251C; --roadtxt:#7C8592; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 32px}
+
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;padding-bottom:14px;border-bottom:1px solid var(--hair)}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(26px,3.4vw,38px);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 small{display:block;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+
+.sw{display:inline-block;width:26px;height:0;border-top-width:3px;border-top-style:solid;flex:none}
+.sw.walk{border-top-style:dotted;border-color:var(--walk)}
+.sw.train{border-color:var(--accent)}
+.sw.taxi{border-top-style:dashed;border-color:var(--taxi)}
+
+.tabs{display:flex;gap:6px;margin:16px 0 14px;flex-wrap:wrap}
+.tab{font:inherit;cursor:pointer;border:1px solid var(--hair);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 16px;display:flex;gap:10px;align-items:baseline}
+.tab b{font-family:var(--f-display);font-weight:700;font-size:15px}
+.tab span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--pin-ink)}
+.tab[aria-selected="true"] span{color:inherit;opacity:.8}
+.tab:focus-visible,.leg:focus-visible,.stop:focus-visible,.mapbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
+.mapbox{position:sticky;top:max(12px,env(safe-area-inset-top,0px));height:calc(100vh - 140px);min-height:420px;border:1px solid var(--hair);border-radius:14px;overflow:hidden;background:var(--water)}
+#base{position:absolute;inset:0;width:100%;height:100%;display:block}
+#map{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#map.drag{cursor:grabbing}
+.mapctl{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.mapbtn{font:500 13px var(--f-body);cursor:pointer;border:1px solid var(--hair);background:var(--panel);color:var(--ink);border-radius:8px;min-width:34px;height:34px;padding:0 10px}
+.mapnote{position:absolute;pointer-events:none;left:10px;bottom:10px;right:56px;font-size:11.5px;color:var(--muted);background:color-mix(in srgb,var(--panel) 88%,transparent);border-radius:6px;padding:4px 8px;width:fit-content;max-width:calc(100% - 66px)}
+
+.daytitle{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin:0 0 10px}
+.gmroute{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 12px}
+.gmroute a{font:500 13px var(--f-body);color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:6px 12px;text-decoration:none}
+.gmroute a:hover{text-decoration:underline}
+.daytitle h2{font-family:var(--f-display);font-size:22px;font-weight:700;margin:0;text-wrap:balance}
+.totals{font-family:var(--f-mono);font-size:12px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+.totals i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+.totals .sw{width:16px}
+
+ol.tl{list-style:none;margin:0;padding:0}
+.stop{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;background:transparent;border:1px solid transparent}
+.stop:hover{background:var(--panel)}
+.stop.sel{background:var(--panel);border-color:var(--accent)}
+.pin{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--pin-ink);display:grid;place-items:center;font:500 13px var(--f-mono);margin-top:2px}
+.stop .t{font-family:var(--f-mono);font-size:12.5px;color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
+.stop .n{font-family:var(--f-display);font-weight:700;font-size:16.5px;line-height:1.25}
+.stop .a{color:var(--muted);font-size:13px}
+.stop .note{font-size:13.5px;margin-top:3px;color:var(--ink)}
+.stop .who{display:inline-block;font:500 11px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--hair);border-radius:4px;padding:0 5px;margin-left:6px;color:var(--muted);vertical-align:2px}
+
+.leg{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;padding:4px 12px;cursor:pointer;border-radius:12px;border:1px solid transparent}
+.leg .rail{display:flex;justify-content:center}
+.leg .rail i{display:block;width:0;height:100%;min-height:52px;border-left:3px solid var(--accent)}
+.leg.walk .rail i{border-left-style:dotted;border-color:var(--walk)}
+.leg.taxi .rail i{border-left-style:dashed;border-color:var(--taxi)}
+.leg .body{padding:8px 0 10px;min-width:0}
+.leg .head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.chip{font:500 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:2px 7px;background:var(--accent-soft);color:var(--accent)}
+.leg.walk .chip{background:color-mix(in srgb,var(--walk) 14%,transparent);color:var(--walk)}
+.leg.taxi .chip{background:color-mix(in srgb,var(--taxi) 16%,transparent);color:var(--taxi)}
+.mins{font:500 13px var(--f-mono);font-variant-numeric:tabular-nums}
+.how{font-size:13.5px;color:var(--muted);margin-top:3px}
+.gm{font-size:12.5px;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor;margin-left:auto}
+.leg:hover{background:var(--panel)}
+.leg.sel{background:var(--panel);border-color:var(--hair)}
+.leg.sel .how{color:var(--ink)}
+
+.foot{margin-top:18px;font-size:12.5px;color:var(--muted);max-width:68ch}
+
+/* map svg classes */
+.g-stn{fill:var(--land);stroke:var(--railtxt);stroke-width:1.5}
+.g-stntxt{fill:var(--railtxt);font:500 11px var(--f-body);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+.g-area{fill:var(--railtxt);font:700 12px var(--f-display);letter-spacing:.14em;text-transform:uppercase;paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+.g-road{fill:var(--roadtxt);font:500 10.5px var(--f-body);font-style:italic;paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+.g-sea{fill:var(--railtxt);font:500 12px var(--f-body);font-style:italic;letter-spacing:.2em;opacity:.8}
+.l{fill:none;stroke-width:3.5;stroke-linecap:round}
+.l.walk{stroke:var(--walk);stroke-dasharray:1 7}
+.l.train{stroke:var(--accent)}
+.l.taxi{stroke:var(--taxi);stroke-dasharray:9 6}
+.l.dim{opacity:.22}
+.l.hl{stroke-width:6}
+.l-hit{fill:none;stroke:transparent;stroke-width:18;cursor:pointer}
+.p circle{fill:var(--accent);stroke:var(--panel);stroke-width:2.5}
+.p text{fill:var(--pin-ink);font:500 11px var(--f-mono);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.p{cursor:pointer}
+.p.dim{opacity:.35}
+.p.sel circle{stroke:var(--ink);stroke-width:3}
+.plabel{fill:var(--ink);font:700 12.5px var(--f-display);paint-order:stroke;stroke:var(--land);stroke-width:4px;pointer-events:none}
+.mlabel{font:500 11px var(--f-mono);paint-order:stroke;stroke:var(--land);stroke-width:4px;pointer-events:none}
+.mlabel.walk{fill:var(--walk)} .mlabel.train{fill:var(--accent)} .mlabel.taxi{fill:var(--taxi)}
+
+@media (max-width:860px){
+  .mapnote{font-size:10.5px;left:6px;bottom:6px;padding:2px 6px}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .mapbox{height:44vh;min-height:300px;max-height:460px;z-index:5;top:env(safe-area-inset-top,0px);border-radius:0 0 14px 14px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<style>
+#map{position:absolute;inset:0}
+.maplibregl-ctrl-attrib{font-size:10.5px}
+.pinm{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--pin-ink);display:grid;place-items:center;font:500 12px var(--f-mono);border:2.5px solid var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer;transition:opacity .2s}
+.pinm.hotel{background:var(--ink);color:var(--bg)}
+.pinm.sel{outline:3px solid var(--ink);outline-offset:1px}
+.pinm.dim{opacity:.35}
+.maplibregl-popup-content{background:var(--panel);color:var(--ink);font:13px var(--f-body);border-radius:10px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.maplibregl-popup-content b{font-family:var(--f-display);font-size:14px}
+.maplibregl-popup-tip{border-top-color:var(--panel)!important;border-bottom-color:var(--panel)!important}
+.maplibregl-popup-close-button{color:var(--muted)}
+.mapnote{position:absolute;left:10px;top:10px;bottom:auto;right:auto;width:auto;font-size:11.5px;color:var(--muted);background:color-mix(in srgb,var(--panel) 90%,transparent);border-radius:6px;padding:4px 8px;pointer-events:none;max-width:calc(100% - 70px)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1><small>Tokyo · Sun Oct 18 – Tue Oct 20</small>Tokyo Trip Routes</h1>
+    <div class="legend" aria-label="Legend">
+      <span><i class="sw walk"></i>Walk</span>
+      <span><i class="sw train"></i>Train</span>
+      <span><i class="sw taxi"></i>Taxi</span>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <div class="grid">
+    <div class="mapbox">
+      <div id="map" role="region" aria-label="Map of the day's stops and the legs between them"></div>
+      <div class="mapnote">Route lines show the order of travel, not the exact path.</div>
+    </div>
+    <section>
+      <div class="daytitle"><h2 id="dtitle"></h2><div class="totals" id="totals"></div></div>
+      <div class="gmroute" id="gmroute"></div>
+      <ol class="tl" id="tl"></ol>
+      <p class="foot">Travel times are estimates for this route at that time of day. Tap “Directions” on any leg for live Google Maps directions. Taxi fares are meter estimates; Haneda has no fixed fare to Minato.</p>
+    </section>
+  </div>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+const S={
+ HND:{n:"Haneda Airport T3",a:"Arrival / departure",lat:35.5446,lng:139.7681,q:"Haneda Airport Terminal 3"},
+ MAISEN:{n:"Tonkatsu Maisen Aoyama",a:"Jingumae",lat:35.6693,lng:139.7106,q:"Tonkatsu Maisen Aoyama Honten"},
+ PBJ:{n:"Pure Blue Japan",a:"Jingumae",lat:35.6731,lng:139.7083,q:"Pure Blue Japan Jingumae Tokyo"},
+ KANEKO:{n:"Kaneko Gankyo-ten Aoyama",a:"Minami-Aoyama 3-chome",lat:35.66557,lng:139.71321,q:"金子眼鏡店 青山店"},
+ AURALEE:{n:"Auralee Tokyo",a:"Minami-Aoyama",lat:35.6618,lng:139.7152,q:"AURALEE TOKYO Minami Aoyama"},
+ KAPTAIN:{n:"Kaptain Sunshine",a:"Minami-Aoyama",lat:35.6603,lng:139.7140,q:"KAPTAIN SUNSHINE AOYAMA"},
+ JMM:{n:"Jacques Marie Mage",a:"Jingumae",lat:35.6662,lng:139.7074,q:"Jacques Marie Mage Omotesando Tokyo Gallery"},
+ SNOW:{n:"Snow Peak Omotesando",a:"Jingumae",lat:35.6684,lng:139.7038,q:"Snow Peak Omotesando"},
+ PARA:{n:"Paraboot",a:"Minami-Aoyama 6-chome",lat:35.66070,lng:139.71499,q:"Paraboot Minami Aoyama"},
+ D2121:{n:"21_21 Design Sight",a:"Tokyo Midtown garden · Roppongi",lat:35.66752,lng:139.73052,q:"21_21 Design Sight"},
+ KARI:{n:"Karimoku Research Center",a:"Nishi-Azabu 2-chome",lat:35.66138,lng:139.72109,q:"KARIMOKU RESEARCH CENTER Nishiazabu"},
+ FAMIMA:{n:"Famima Flagship Store",a:"Toranomon 5-chome · near Kamiyacho",lat:35.66247,lng:139.74432,q:"FAMIMA FLAGSHIP STORE Toranomon"},
+ KANEKO2:{n:"Kaneko Gankyo-ten Ginza",a:"Ginza 2-chome",lat:35.67425,lng:139.76639,q:"金子眼鏡店 銀座2-4-17"},
+ BROOKS:{n:"Brooks Brothers Omotesando",a:"Minami-Aoyama 5-chome · gift for Dad",lat:35.66440,lng:139.71330,q:"Brooks Brothers H-CUBE Minamiaoyama"},
+ GANZO:{n:"GANZO Honten",a:"Jingumae 5-chome · gift for Carlos",lat:35.66680,lng:139.71100,q:"GANZO Honten Jingumae"},
+ KIDDY:{n:"Kiddy Land Harajuku",a:"Jingumae 6-chome · gift for your nephew",lat:35.66880,lng:139.70550,q:"Kiddy Land Harajuku"},
+ BIC:{n:"Bic Camera Yurakucho",a:"Yurakucho · watches for Mom and Dad",lat:35.67480,lng:139.76250,q:"Bic Camera Yurakucho"},
+ GANZOG:{n:"GANZO Ginza",a:"Ginza 3-chome",lat:35.67280,lng:139.76680,q:"GANZO Ginza"},
+ HOTEL:{n:"InterContinental the Strings",a:"Shinagawa East One Tower · lobby 26F",lat:35.62925,lng:139.74180,q:"InterContinental Tokyo The Strings Shinagawa"},
+ MOMO:{n:"Momotaro Jeans Aoyama",a:"Kita-Aoyama · Ao Building 1–2F",lat:35.66630,lng:139.71250,q:"MOMOTARO JEANS Aoyama"},
+ DART:{n:"Studio D'artisan Tokyo",a:"Jingumae 6-chome",lat:35.66663,lng:139.70560,q:"Studio D'artisan Tokyo Jingumae"},
+ BEARS:{n:"Bears",a:"Shimokitazawa · Marché Shimokitazawa",lat:35.66201,lng:139.66876,q:"Bears ベアーズ Shimokitazawa"},
+ PICKUP:{n:"Pick up hemmed jeans",a:"Studio D'artisan",lat:35.66663,lng:139.70560,q:"Studio D'artisan Tokyo Jingumae"},
+ BLINC:{n:"blinc",a:"Gaienmae · eyewear",lat:35.67030,lng:139.71920,q:"blinc Gaienmae Minami Aoyama"},
+ IMAI:{n:"Yakitori Imai",a:"Jingumae 3-chome · or Sushi Masashi nearby",lat:35.67170,lng:139.71220,q:"Yakitori Imai Jingumae"},
+ UKAI:{n:"Omotesando Ukai-tei",a:"Omotesando GYRE 5F",lat:35.6668,lng:139.7068,q:"Omotesando Ukai-tei"},
+ TSUKIJI:{n:"Tsukiji Outer Market",a:"Tsukiji",lat:35.6655,lng:139.7707,q:"Tsukiji Outer Market"},
+ OZEKI:{n:"OZEKI Tokyo Gallery",a:"Nihonbashi Ningyocho",lat:35.6844,lng:139.7817,q:"OZEKI Tokyo Gallery Ningyocho"},
+ MIDORI:{n:"Sushi no Midori Ginza",a:"Ginza 8-chome",lat:35.6676,lng:139.7598,q:"Sushi no Midori Ginza"},
+ HERMES:{n:"Maison Hermès Ginza",a:"Sukiyabashi",lat:35.6714,lng:139.7631,q:"Ginza Maison Hermès"},
+ G6:{n:"GINZA SIX",a:"The Row 3F · Dior · Celine · Loewe",lat:35.6697,lng:139.7640,q:"GINZA SIX"},
+ DSM:{n:"Dover Street Market Ginza",a:"Kaneko Ginza is next door",lat:35.6704,lng:139.7651,q:"Dover Street Market Ginza"},
+ BONPOINT:{n:"Bonpoint Ginza",a:"Kojunsha-dori",lat:35.6689,lng:139.7618,q:"Bonpoint Ginza"},
+ MITSU:{n:"Ginza Mitsukoshi",a:"Kids floor · Familiar shop",lat:35.6711,lng:139.7660,q:"Ginza Mitsukoshi"},
+ ISETAN:{n:"Isetan Shinjuku",a:"Shinjuku-sanchome",lat:35.6918,lng:139.7047,q:"Isetan Shinjuku"},
+ NAKANO:{n:"Nakano Broadway",a:"Nakano",lat:35.7095,lng:139.6658,q:"Nakano Broadway"},
+ MASASHI:{n:"Sushi Masashi",a:"Kita-Aoyama · or Yakitori Imai nearby",lat:35.6718,lng:139.7175,q:"Sushi Masashi Kita Aoyama"},
+ MOON:{n:"MOONSTAR + IDÉE Shop",a:"Jiyugaoka",lat:35.6091,lng:139.6704,q:"MOONSTAR Jiyugaoka"},
+ KATA:{n:"katakana",a:"Jiyugaoka",lat:35.6062,lng:139.6680,q:"katakana Okusawa Jiyugaoka"},
+ DIOR:{n:"Dior Bamboo Pavilion",a:"Daikanyama · Café Dior inside",lat:35.6496,lng:139.7022,q:"Dior Bamboo Pavilion Daikanyama"},
+ MON:{n:"MoN Takanawa",a:"Takanawa Gateway City",lat:35.6392,lng:139.7413,q:"MoN Takanawa The Museum of Narratives"}
+};
+
+const DAYS=[
+ {id:"sun",tab:"Sun",date:"Oct 18",title:"Denim and Aoyama on day one",
+  stops:[
+   {s:"HND",t:"10:45",note:"Land. Allow about an hour for immigration and bags."},
+   {s:"HOTEL",t:"12:10",note:"Drop bags at the 26F lobby; check-in is likely mid-afternoon. The hotel is a 1 min walk from Shinagawa's Konan (east) exit."},
+   {s:"MOMO",t:"1:00",note:"Opens 11:00. Hemming is free and same-day on jeans bought here. Leave your pair and collect it after lunch."},
+   {s:"KANEKO",t:"1:20",note:"Frames only; you're doing lenses later. Open 11:00–20:00."},
+   {s:"BROOKS",t:"1:35",note:"Gift for Dad. Opens 11:30. Japan's Brooks Brothers stock includes knitwear you won't see in the US."},
+   {s:"MAISEN",t:"2:00",note:"Late lunch, open 11:00–22:45; the line is shorter after 2. Grab your Momotaro jeans on the way out, 4 min away."},
+   {s:"GANZO",t:"2:50",note:"Gift for Carlos. Ganzo's flagship: cordovan and bridle-leather wallets, card cases and key cases. Open 11:00–20:00."},
+   {s:"DART",t:"3:10",note:"Open 11:00–20:00. Buy and drop off for hemming; collect before dinner."},
+   {s:"KIDDY",t:"3:35",note:"Gift for your nephew. Tomica die-cast cars are on 3F. Open 11:00–20:00, tax-free over ¥5,000, gift wrapping available."},
+   {s:"KAPTAIN",t:"4:05",note:"Closed Mondays, so today is the day. Open 12:00–20:00. Good knitwear if you're still shopping for Dad."},
+   {s:"PARA",t:"4:30",note:"French shoes. Open daily 11:00–20:00, around the corner from Kaptain Sunshine."},
+   {s:"D2121",t:"5:00",note:"Open 10:00–19:00, closed Tuesdays. Now showing: Learning from Hōjōki (to Jan 11)."},
+   {s:"PICKUP",t:"6:00",note:"Collect your hemmed pair at Studio D'artisan."},
+   {s:"UKAI",t:"6:30",note:"Wagyu teppanyaki. Book an 18:30 seating on TableCheck and ask for the counter."}
+  ],
+  legs:[
+   {m:"taxi",min:30,how:"Taxi stand outside arrivals. Metered, roughly ¥6,000–8,000 with tolls. Ask for a larger taxi or wagon if you have three or more big suitcases. Train alternative: Keikyu to Shinagawa, 15 min, then a 5–10 min walk through the station to the Konan exit.",via:"driving"},
+   {m:"taxi",min:20,how:"Taxi from the hotel to Omotesando crossing. By train: JR Yamanote to Shibuya, Ginza line to Omotesando, about 25 min."},
+   {m:"walk",min:4,how:"Cross Aoyama-dori at the Omotesando crossing to Minami-Aoyama 3-chome."},
+   {m:"walk",min:4,how:"Down Omotesando's Minami-Aoyama side toward Kotto-dori."},
+   {m:"walk",min:5,how:"Back across Aoyama-dori and into the Jingumae 4-chome lanes."},
+   {m:"walk",min:5,how:"Via Momotaro for your jeans, then a block north."},
+   {m:"walk",min:10,how:"Up Omotesando avenue to Meiji-dori."},
+   {m:"walk",min:4,how:"Two blocks toward Meiji-jingumae station."},
+   {m:"taxi",min:10,how:"Short taxi to Kotto-dori. Walking is about 20 min down Omotesando and Kotto-dori."},
+   {m:"walk",min:4,how:"A block east along the back streets of Minami-Aoyama 6-chome."},
+   {m:"taxi",min:10,how:"Taxi via Roppongi-dori to Tokyo Midtown. Walking is about 20 min through Nishi-Azabu."},
+   {m:"taxi",min:15,how:"Taxi back to Harajuku via Aoyama-dori, drop-off on Meiji-dori."},
+   {m:"walk",min:8,how:"Out to Omotesando avenue. GYRE is the twisting building; take the lift to 5F."}
+  ]},
+ {id:"mon",tab:"Mon",date:"Oct 19",title:"Tsukiji, Ginza gifts, split afternoon",
+  stops:[
+   {s:"HOTEL",t:"8:00",note:"Head out early. Tsukiji is busiest after 10."},
+   {s:"TSUKIJI",t:"8:30",note:"Breakfast grazing. Mostly cash only."},
+   {s:"OZEKI",t:"9:45",note:"Akari lamps. Weekdays 9:00–17:00 only."},
+   {s:"MIDORI",t:"10:55",note:"Take a queue number at the 11:00 opening, then shop until it's called."},
+   {s:"HERMES",t:"11:15",note:"Opens 11:00. Scarves, small leather goods, jewelry. Also a strong option for Carlos."},
+   {s:"BIC",t:"11:45",note:"Watches for Mom and Dad. Big Casio, Seiko and Citizen counters, including Japan-only models, tax-free at the register. Open 10:00–22:00."},
+   {s:"G6",t:"12:15",note:"The Row is on 3F. Open 10:30–20:30."},
+   {s:"DSM",t:"12:50",note:"The Row shop-in-shop on 5F. Head back to Midori for lunch when your number is close."},
+   {s:"GANZOG",t:"2:00",note:"Second chance at a Ganzo gift for Carlos. Open 11:00–20:00."},
+   {s:"KANEKO2",t:"2:15",note:"Second Kaneko on your list. Open 11:00–20:00."},
+   {s:"ISETAN",t:"3:00",note:"She stays here: the children's floor for your new nephew and Auralee women's on 4F.",who:"Her"},
+   {s:"NAKANO",t:"3:30",note:"Vintage watches and Mandarake. For Mom and Dad: JackRoad has affordable vintage Seiko, and sister shop BettyRoad does women's watches.",who:"Eric"},
+   {s:"BLINC",t:"5:00",note:"Regroup here. Eyewear shop on your priority list."},
+   {s:"IMAI",t:"6:00",note:"Counter yakitori, opens 17:00, closed Sundays. Book online. Sushi Masashi is a few minutes away if you'd rather do its 17:30 seating."}
+  ],
+  legs:[
+   {m:"taxi",min:15,how:"Taxi via Daiichi Keihin and Showa-dori. By train: Keikyu/Toei Asakusa line from Shinagawa to Higashi-Ginza (about 12 min), then a 5 min walk.",via:"driving"},
+   {m:"train",min:15,how:"Walk 3 min to Tsukiji station. Hibiya line 3 stops to Ningyocho, exit A5, 3 min walk."},
+   {m:"taxi",min:12,how:"Taxi straight to Ginza 8-chome so you're in line at 11:00. By train it's 20 min on the Hibiya line to Ginza plus a walk.",via:"driving"},
+   {m:"walk",min:6,how:"Up Ginza's main streets to Sukiyabashi crossing."},
+   {m:"walk",min:4,how:"Under the tracks to the big Bic Camera building by Yurakucho station."},
+   {m:"walk",min:8,how:"Back down Harumi-dori and south along Chuo-dori to GINZA SIX."},
+   {m:"walk",min:2,how:"Around the corner on Suzuran-dori."},
+   {m:"walk",min:12,how:"Lunch at Midori when called, then north up Chuo-dori to Ginza 3-chome."},
+   {m:"walk",min:3,how:"One block north to Ginza 2-chome."},
+   {m:"train",min:25,how:"Walk 5 min to Ginza station, then the Marunouchi line to Shinjuku-sanchome, about 16 min. Isetan connects directly from the station."},
+   {m:"train",min:20,how:"Eric only. Walk 8 min to JR Shinjuku, Chuo Rapid one stop to Nakano (5 min), then walk through the Sun Mall arcade (5 min).",who:"Eric"},
+   {m:"taxi",min:25,how:"Eric: taxi from Nakano Station. She comes from Isetan by taxi, about 15 min.",via:"driving",who:"Both"},
+   {m:"walk",min:12,how:"West along the Gaien-nishi-dori side streets into Jingumae 3-chome."}
+  ]},
+ {id:"tue",tab:"Tue",date:"Oct 20",title:"Jiyugaoka, Dior, design stops, out by 5:15",
+  stops:[
+   {s:"HOTEL",t:"10:15",note:"Check out and leave bags with the 26F front desk until the afternoon."},
+   {s:"MOON",t:"11:00",note:"MOONSTAR opens 11:00. IDÉE next door opens 11:30 on weekdays."},
+   {s:"KATA",t:"11:40",note:"Japanese gifts and souvenirs. Opens 11:00."},
+   {s:"DIOR",t:"12:30",note:"Open 11:00–19:00. Book Café Dior online by 11 PM Monday for a 1:15 lunch."},
+   {s:"KARI",t:"2:40",note:"Karimoku's design gallery. Weekdays 1:00–6:00 PM, no reservation needed, so today is the day."},
+   {s:"FAMIMA",t:"3:25",note:"FamilyMart's flagship. Open 6:00–1:00 daily."},
+   {s:"MON",t:"3:55",note:"Open today; it only closes on the 2nd Tuesday."},
+   {s:"HOTEL",t:"4:50",note:"Collect bags from the front desk. Leave by 5:15."},
+   {s:"HND",t:"5:45",note:"Flight at 8:05 PM. Check your boarding pass for the terminal."}
+  ],
+  legs:[
+   {m:"train",min:25,how:"JR Keihin-Tohoku one stop to Oimachi, then the Tokyu Oimachi line express to Jiyugaoka. Taxi is about 25 min."},
+   {m:"walk",min:5,how:"South across the tracks to Okusawa."},
+   {m:"train",min:20,how:"Tokyu Toyoko line local from Jiyugaoka to Daikanyama (5 stops, about 12 min), then a 7 min walk to Sarugakucho."},
+   {m:"taxi",min:12,how:"Taxi via Komazawa-dori and Roppongi-dori to Nishi-Azabu.",via:"driving"},
+   {m:"taxi",min:8,how:"Short taxi east past Azabudai Hills to Kamiyacho. Walking is about 25 min.",via:"driving"},
+   {m:"taxi",min:15,how:"Taxi south via Sakurada-dori and Daiichi Keihin to Takanawa Gateway City.",via:"driving"},
+   {m:"walk",min:15,how:"South through Takanawa Gateway City to Shinagawa Station, then out the Konan exit. A taxi is 5 min."},
+   {m:"taxi",min:30,how:"Taxi from the hotel with your luggage. Metered, roughly ¥6,000–8,000 with tolls. Allow extra time for Tuesday evening traffic.",via:"driving"}
+  ]}
+];
+
+const modeName={walk:"Walk",train:"Train",taxi:"Taxi"};
+const modeVia=m=>m==="walk"?"walking":m==="taxi"?"driving":"transit";
+const mapsURL=(a,b,mode)=>"https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(a.q)+"&destination="+encodeURIComponent(b.q)+"&travelmode="+mode;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let day=DAYS[0],sel=null,markers=[];
+
+/* ---------- theme ---------- */
+const darkMQ=matchMedia("(prefers-color-scheme: dark)");
+const isDark=()=>{const t=document.documentElement.getAttribute("data-theme");return t?t==="dark":darkMQ.matches};
+const styleURL=()=>"https://tiles.openfreemap.org/styles/"+(isDark()?"dark":"positron");
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* ---------- map ---------- */
+const map=new maplibregl.Map({container:"map",style:styleURL(),center:[139.72,35.66],zoom:12,attributionControl:{compact:true},dragRotate:false,pitchWithRotate:false});
+map.touchZoomRotate.disableRotation();
+map.addControl(new maplibregl.NavigationControl({showCompass:false}),"top-right");
+map.on("error",e=>{if(isDark()&&String(e.error&&e.error.message||"").includes("dark"))map.setStyle("https://tiles.openfreemap.org/styles/positron")});
+
+function curve(a,b){ // gentle arc between two [lng,lat]
+  const [x1,y1]=a,[x2,y2]=b,dx=x2-x1,dy=y2-y1,k=.15,mx=(x1+x2)/2-dy*k,my=(y1+y2)/2+dx*k,pts=[];
+  for(let t=0;t<=1.0001;t+=1/24)pts.push([(1-t)*(1-t)*x1+2*(1-t)*t*mx+t*t*x2,(1-t)*(1-t)*y1+2*(1-t)*t*my+t*t*y2]);
+  return pts}
+function legsGeo(){return{type:"FeatureCollection",features:day.legs.map((lg,i)=>{const a=S[day.stops[i].s],b=S[day.stops[i+1].s];
+  return{type:"Feature",properties:{i,m:lg.m,min:lg.min},geometry:{type:"LineString",coordinates:curve([a.lng,a.lat],[b.lng,b.lat])}}})}}
+function addRouteLayers(){
+  if(!map.getSource("legs"))map.addSource("legs",{type:"geojson",data:legsGeo()});
+  const op=["case",["==",["literal",sel&&sel.type==="leg"?1:0],0],0.95,["==",["get","i"],sel&&sel.type==="leg"?sel.i:-1],1,0.25];
+  const base={type:"line",source:"legs",layout:{"line-cap":"round","line-join":"round"}};
+  if(!map.getLayer("legs-casing"))map.addLayer({...base,id:"legs-casing",paint:{"line-color":css("--panel"),"line-width":7,"line-opacity":op}});
+  for(const m of ["walk","train","taxi"]){const id="legs-"+m;if(map.getLayer(id))continue;
+    map.addLayer({...base,id,filter:["==",["get","m"],m],paint:{"line-color":css(m==="walk"?"--walk":m==="taxi"?"--taxi":"--accent"),"line-width":["case",["==",["get","i"],sel&&sel.type==="leg"?sel.i:-1],6,4],"line-opacity":op,...(m==="walk"?{"line-dasharray":[0.3,2]}:m==="taxi"?{"line-dasharray":[2,1.5]}:{})}});
+    map.on("click",id,e=>{const f=e.features[0];choose("leg",f.properties.i,true)});
+    map.on("mouseenter",id,()=>map.getCanvas().style.cursor="pointer");map.on("mouseleave",id,()=>map.getCanvas().style.cursor="");}
+}
+function refreshRoute(){
+  if(!map.isStyleLoaded())return;
+  const src=map.getSource("legs");if(src)src.setData(legsGeo());
+  const si=sel&&sel.type==="leg"?sel.i:-1,any=si>=0?1:0;
+  const op=["case",["==",["literal",any],0],0.95,["==",["get","i"],si],1,0.25];
+  for(const id of ["legs-casing","legs-walk","legs-train","legs-taxi"])if(map.getLayer(id)){map.setPaintProperty(id,"line-opacity",op);
+    if(id!=="legs-casing")map.setPaintProperty(id,"line-width",["case",["==",["get","i"],si],6,4]);}
+}
+map.on("style.load",()=>{addRouteLayers();refreshRoute()});
+const reTheme=()=>{map.setStyle(styleURL())};
+darkMQ.addEventListener("change",reTheme);
+new MutationObserver(reTheme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+let popup=null;
+function showPopup(lngLat,html){if(popup)popup.remove();popup=new maplibregl.Popup({offset:18,closeButton:true,maxWidth:"260px"}).setLngLat(lngLat).setHTML(html).addTo(map)}
+
+function buildMarkers(){
+  markers.forEach(m=>m.remove());markers=[];
+  day.stops.forEach((st,i)=>{const p=S[st.s];
+    // stacked duplicates (same place twice in a day): offset slightly
+    const el=document.createElement("button");el.className="pinm"+(st.s==="HOTEL"?" hotel":"");el.textContent=st.s==="HOTEL"?"H":i+1;
+    el.setAttribute("aria-label",(i+1)+". "+p.n);
+    el.addEventListener("click",ev=>{ev.stopPropagation();choose("stop",i,true)});
+    markers.push(new maplibregl.Marker({element:el}).setLngLat([p.lng,p.lat]).addTo(map));});
+}
+function markMarkers(){
+  markers.forEach((m,i)=>{const el=m.getElement();const legOn=sel&&sel.type==="leg"&&(sel.i===i||sel.i+1===i),stOn=sel&&sel.type==="stop"&&sel.i===i;
+    el.classList.toggle("sel",!!(legOn||stOn));el.classList.toggle("dim",!!(sel&&!(legOn||stOn)))});
+}
+function bounds(keys){const b=new maplibregl.LngLatBounds();keys.forEach(k=>b.extend([S[k].lng,S[k].lat]));return b}
+function fitDay(){if(popup)popup.remove();map.fitBounds(bounds(day.stops.map(s=>s.s)),{padding:50,maxZoom:15,duration:reduce?0:700})}
+
+/* ---------- list ---------- */
+function buildList(){
+  document.getElementById("dtitle").textContent=day.title;
+  const tot={walk:0,train:0,taxi:0};day.legs.forEach(l=>tot[l.m]+=l.min);
+  const qs=day.stops.map(st=>S[st.s].q).filter((q,i,a)=>i===0||q!==a[i-1]);const parts=[];for(let i=0;i<qs.length-1;i+=9)parts.push(qs.slice(i,i+10));
+  document.getElementById("gmroute").innerHTML=parts.map((p,i)=>`<a href="https://www.google.com/maps/dir/${p.map(encodeURIComponent).join("/")}" target="_blank" rel="noopener">Open ${parts.length>1?(i?"second half":"first half")+" of the day":"the day"} in Google Maps</a>`).join("");
+  document.getElementById("totals").innerHTML=Object.keys(tot).filter(k=>tot[k]).map(k=>`<i><span class="sw ${k}"></span>${tot[k]} min</i>`).join("");
+  let h="";
+  day.stops.forEach((st,i)=>{const p=S[st.s];
+    h+=`<li class="stop" tabindex="0" data-stop="${i}" id="st-${i}"><div class="pin">${st.s==="HOTEL"?"H":i+1}</div><div><div class="t">${st.t}</div><div class="n">${esc(p.n)}${st.who?`<span class="who">${st.who}</span>`:""}</div><div class="a">${esc(p.a)}</div><div class="note">${esc(st.note)}</div></div></li>`;
+    const lg=day.legs[i];
+    if(lg){const b=S[day.stops[i+1].s];
+      h+=`<li class="leg ${lg.m}" tabindex="0" data-leg="${i}" id="lg-${i}"><div class="rail"><i></i></div><div class="body"><div class="head"><span class="chip">${modeName[lg.m]}</span><span class="mins">~${lg.min} min</span>${lg.who&&lg.who!=="Both"?`<span class="who" style="margin:0">${lg.who}</span>`:""}<a class="gm" href="${mapsURL(p,b,modeVia(lg.m))}" target="_blank" rel="noopener">Directions</a></div><div class="how">${esc(lg.how)}</div></div></li>`;}
+  });
+  document.getElementById("tl").innerHTML=h;
+}
+function markList(){document.querySelectorAll(".stop,.leg").forEach(e=>e.classList.remove("sel"));if(!sel)return null;
+  const el=document.getElementById((sel.type==="leg"?"lg-":"st-")+sel.i);if(el)el.classList.add("sel");return el}
+function choose(type,i,scroll){
+  if(sel&&sel.type===type&&sel.i===i){sel=null;markList();markMarkers();refreshRoute();fitDay();return}
+  sel={type,i};const el=markList();markMarkers();refreshRoute();
+  if(type==="leg"){const a=day.stops[i],b=day.stops[i+1],lg=day.legs[i];
+    map.fitBounds(bounds([a.s,b.s]),{padding:80,maxZoom:16,duration:reduce?0:700});
+    const A=S[a.s],B=S[b.s];showPopup([(A.lng+B.lng)/2,(A.lat+B.lat)/2],`<b>${modeName[lg.m]} · ~${lg.min} min</b><br>${esc(A.n)} → ${esc(B.n)}`);}
+  else{const p=S[day.stops[i].s];map.flyTo({center:[p.lng,p.lat],zoom:Math.max(map.getZoom(),15),duration:reduce?0:700});
+    showPopup([p.lng,p.lat],`<b>${esc(p.n)}</b><br>${esc(day.stops[i].t)} · ${esc(p.a)}`);}
+  if(scroll&&el)el.scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"});
+}
+
+/* ---------- tabs ---------- */
+function buildTabs(){document.getElementById("tabs").innerHTML=DAYS.map(d=>`<button class="tab" role="tab" aria-selected="${d===day}" data-day="${d.id}"><b>${d.tab}</b><span>${d.date}</span></button>`).join("")}
+function setDay(id){day=DAYS.find(d=>d.id===id)||DAYS[0];sel=null;buildTabs();buildList();buildMarkers();refreshRoute();
+  try{localStorage.setItem("tokyo-day",day.id)}catch(e){}
+  try{history.replaceState(null,"","#"+day.id)}catch(e){}
+  fitDay()}
+
+document.getElementById("tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)setDay(b.dataset.day)});
+const tl=document.getElementById("tl");
+tl.addEventListener("click",e=>{if(e.target.closest("a"))return;const s=e.target.closest(".stop"),l=e.target.closest(".leg");if(s)choose("stop",+s.dataset.stop);else if(l)choose("leg",+l.dataset.leg)});
+tl.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const s=e.target.closest(".stop"),l=e.target.closest(".leg");if(!s&&!l)return;e.preventDefault();s?choose("stop",+s.dataset.stop):choose("leg",+l.dataset.leg)});
+
+let start="sun";const hash=(location.hash||"").slice(1);
+if(DAYS.some(d=>d.id===hash))start=hash;else{try{const v=localStorage.getItem("tokyo-day");if(v&&DAYS.some(d=>d.id===v))start=v}catch(e){}}
+map.on("load",()=>setDay(start));
+buildTabs();
+</script>
+
+</body>
+</html>
