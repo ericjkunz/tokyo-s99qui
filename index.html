@@ -273,7 +273,12 @@ const S={
  MOON:{n:"MOONSTAR + IDÉE Shop",a:"Jiyugaoka",lat:35.6091,lng:139.6704,q:"MOONSTAR Jiyugaoka"},
  KATA:{n:"katakana",a:"Jiyugaoka",lat:35.6062,lng:139.6680,q:"katakana Okusawa Jiyugaoka"},
  DIOR:{n:"Dior Bamboo Pavilion",a:"Daikanyama · Café Dior inside",lat:35.6496,lng:139.7022,q:"Dior Bamboo Pavilion Daikanyama"},
- MON:{n:"MoN Takanawa",a:"Takanawa Gateway City",lat:35.6392,lng:139.7413,q:"MoN Takanawa The Museum of Narratives"}
+ MON:{n:"MoN Takanawa",a:"Takanawa Gateway City",lat:35.6392,lng:139.7413,q:"MoN Takanawa The Museum of Narratives"},
+ KITSUNE:{n:"Café Kitsuné Aoyama",a:"Minami-Aoyama 3-chome · matcha latte",lat:35.66480,lng:139.71510,q:"Cafe Kitsune Aoyama"},
+ OMOIDE:{n:"Omoide Yokocho",a:"Nishi-Shinjuku · by the West exit",lat:35.69290,lng:139.69950,q:"Omoide Yokocho Shinjuku"},
+ GOLDEN:{n:"Shinjuku Golden Gai",a:"Kabukicho 1-chome · by Hanazono Shrine",lat:35.69400,lng:139.70460,q:"Shinjuku Golden Gai"},
+ TIAS:{n:"Tokyo International Audio Show",a:"Tokyo International Forum · Yurakucho",lat:35.67660,lng:139.76370,q:"Tokyo International Forum"},
+ CONRAN:{n:"The Conran Shop Daikanyama",a:"Daikanyama · OJAS listening room B1F",lat:35.64870,lng:139.70250,q:"The Conran Shop Daikanyama"}
 };
 
 const DAYS=[
@@ -311,37 +316,45 @@ const DAYS=[
    {m:"taxi",min:15,how:"Taxi back to Harajuku via Aoyama-dori, drop-off on Meiji-dori."},
    {m:"walk",min:8,how:"Out to Omotesando avenue. GYRE is the twisting building; take the lift to 5F."}
   ]},
- {id:"mon",tab:"Mon",date:"Oct 19",title:"Tsukiji, Ginza gifts, split afternoon",
+ {id:"mon",tab:"Mon",date:"Oct 19",title:"Matcha, Aoyama denim and eyewear, Shinjuku alleys",
   stops:[
-   {s:"HOTEL",t:"8:00",note:"Head out early. Tsukiji is busiest after 10."},
-   {s:"TSUKIJI",t:"8:30",note:"Breakfast grazing. Mostly cash only."},
-   {s:"OZEKI",t:"9:45",note:"Akari lamps. Weekdays 9:00–17:00 only."},
-   {s:"MIDORI",t:"10:55",note:"Take a queue number at the 11:00 opening, then shop until it's called."},
-   {s:"HERMES",t:"11:15",note:"Opens 11:00. Scarves, small leather goods, jewelry. Also a strong option for Carlos."},
-   {s:"BIC",t:"11:45",note:"Watches for Mom and Dad. Big Casio, Seiko and Citizen counters, including Japan-only models, tax-free at the register. Open 10:00–22:00."},
-   {s:"G6",t:"12:15",note:"The Row is on 3F. Open 10:30–20:30."},
-   {s:"DSM",t:"12:50",note:"The Row shop-in-shop on 5F. Head back to Midori for lunch when your number is close."},
-   {s:"GANZOG",t:"2:00",note:"Second chance at a Ganzo gift for Carlos. Open 11:00–20:00."},
-   {s:"KANEKO2",t:"2:15",note:"Second Kaneko on your list. Open 11:00–20:00."},
-   {s:"ISETAN",t:"3:00",note:"She stays here: the children's floor for your new nephew and Auralee women's on 4F.",who:"Her"},
-   {s:"NAKANO",t:"3:30",note:"Vintage watches and Mandarake. For Mom and Dad: JackRoad has affordable vintage Seiko, and sister shop BettyRoad does women's watches.",who:"Eric"},
-   {s:"BLINC",t:"5:00",note:"Regroup here. Eyewear shop on your priority list."},
-   {s:"IMAI",t:"6:00",note:"Counter yakitori, opens 17:00, closed Sundays. Book online. Sushi Masashi is a few minutes away if you'd rather do its 17:30 seating."}
+   {s:"HOTEL",t:"9:45",note:"Breakfast at the hotel, then head out."},
+   {s:"KITSUNE",t:"10:15",note:"Matcha latte. Opens 9:00 daily; it's a small café, with a few seats out front. The Maison Kitsuné shop is next door."},
+   {s:"DART",t:"11:00",note:"Opens 11:00. Buy and drop off for hemming; collect at 3:00 before you leave Harajuku."},
+   {s:"MOMO",t:"11:25",note:"Opens 11:00. Hemming is free and same-day on jeans bought here. Leave your pair and collect it after lunch."},
+   {s:"KANEKO",t:"11:40",note:"Frames only; you're doing lenses later. Open 11:00–20:00."},
+   {s:"BROOKS",t:"11:55",note:"Gift for Dad. Opens 11:30. Japan's Brooks Brothers stock includes knitwear you won't see in the US."},
+   {s:"BLINC",t:"12:15",note:"Eyewear shop on your priority list. I couldn't confirm Monday hours, and an old listing says it's closed Mondays, so check Google Maps before walking over."},
+   {s:"MAISEN",t:"12:45",note:"Lunch, open 11:00–22:45. Weekday lines move fast; the shortest is after 1:30."},
+   {s:"GANZO",t:"1:45",note:"Collect your Momotaro jeans on the way (2 min). Gift for Carlos: cordovan and bridle-leather wallets, card cases and key cases. Open 11:00–20:00."},
+   {s:"JMM",t:"2:05",note:"Jacques Marie Mage's eyewear gallery. Open daily."},
+   {s:"ONITSUKA",t:"2:20",note:"The flagship, on Omotesando avenue. Open 11:00–20:00. Carries the full range, including the pricier Nippon Made line."},
+   {s:"KIDDY",t:"2:40",note:"Gift for your nephew. Tomica die-cast cars are on 3F. Open 11:00–20:00, tax-free over ¥5,000, gift wrapping available."},
+   {s:"PICKUP",t:"3:00",note:"Collect your hemmed pair at Studio D'artisan."},
+   {s:"ISETAN",t:"3:30",note:"Children's floor for your nephew and Auralee women's on 4F. BEAMS Shinjuku is 3 minutes away if you'd rather split up. Open 10:00–20:00."},
+   {s:"TORISHIGE",t:"4:55",note:"Dinner. Bib Gourmand pork-and-beef skewer counter, opens 17:00. Cash only. It fills by 6, so be there at opening, or phone a booking: +81 3-3379-5188."},
+   {s:"OMOIDE",t:"6:30",note:"Lantern-lit alley of tiny yakitori stalls by the tracks. Walk it end to end; stop for a beer if a counter has room."},
+   {s:"GOLDEN",t:"7:15",note:"Six narrow lanes of tiny bars. Many open around 7–8 PM and charge a ¥500–1,500 cover; signs on the door say if foreigners or cover charges are welcome. Small parties do best."},
+   {s:"HOTEL",t:"9:30",note:"Back at the hotel."}
   ],
   legs:[
-   {m:"taxi",min:15,how:"Taxi via Daiichi Keihin and Showa-dori. By train: Keikyu/Toei Asakusa line from Shinagawa to Higashi-Ginza (about 12 min), then a 5 min walk.",via:"driving"},
-   {m:"train",min:15,how:"Walk 3 min to Tsukiji station. Hibiya line 3 stops to Ningyocho, exit A5, 3 min walk."},
-   {m:"taxi",min:12,how:"Taxi straight to Ginza 8-chome so you're in line at 11:00. By train it's 20 min on the Hibiya line to Ginza plus a walk.",via:"driving"},
-   {m:"walk",min:6,how:"Up Ginza's main streets to Sukiyabashi crossing."},
-   {m:"walk",min:4,how:"Under the tracks to the big Bic Camera building by Yurakucho station."},
-   {m:"walk",min:8,how:"Back down Harumi-dori and south along Chuo-dori to GINZA SIX."},
-   {m:"walk",min:2,how:"Around the corner on Suzuran-dori."},
-   {m:"walk",min:12,how:"Lunch at Midori when called, then north up Chuo-dori to Ginza 3-chome."},
-   {m:"walk",min:3,how:"One block north to Ginza 2-chome."},
-   {m:"train",min:25,how:"Walk 5 min to Ginza station, then the Marunouchi line to Shinjuku-sanchome, about 16 min. Isetan connects directly from the station."},
-   {m:"train",min:20,how:"Eric only. Walk 8 min to JR Shinjuku, Chuo Rapid one stop to Nakano (5 min), then walk through the Sun Mall arcade (5 min).",who:"Eric"},
-   {m:"taxi",min:25,how:"Eric: taxi from Nakano Station. She comes from Isetan by taxi, about 15 min.",via:"driving",who:"Both"},
-   {m:"walk",min:12,how:"West along the Gaien-nishi-dori side streets into Jingumae 3-chome."}
+   {m:"taxi",min:20,how:"Taxi to Minami-Aoyama 3-chome, roughly ¥4,000. By train: JR Yamanote to Shibuya, Ginza line to Omotesando, exit A4, about 25 min.",via:"driving"},
+   {m:"walk",min:15,how:"Back to the Omotesando crossing and west along Omotesando avenue toward Harajuku."},
+   {m:"walk",min:12,how:"Back east along Omotesando avenue toward Aoyama-dori."},
+   {m:"walk",min:4,how:"Cross Aoyama-dori at the Omotesando crossing to Minami-Aoyama 3-chome."},
+   {m:"walk",min:4,how:"Down Omotesando's Minami-Aoyama side toward Kotto-dori."},
+   {m:"walk",min:10,how:"Northeast along Aoyama-dori toward Gaienmae station."},
+   {m:"walk",min:12,how:"Back west along Aoyama-dori and into the Jingumae 4-chome lanes. A taxi is 5 min."},
+   {m:"walk",min:5,how:"Via Momotaro for your jeans, then a block over."},
+   {m:"walk",min:6,how:"Out to Omotesando avenue and toward Omotesando Hills."},
+   {m:"walk",min:2,how:"A few doors along Omotesando avenue."},
+   {m:"walk",min:5,how:"Along Omotesando avenue to Meiji-dori."},
+   {m:"walk",min:4,how:"Back into Jingumae 6-chome."},
+   {m:"taxi",min:15,how:"Taxi up Meiji-dori to Shinjuku-sanchome. By train: Fukutoshin line from Meiji-jingumae, 2 stops to Shinjuku-sanchome, which connects to Isetan B1.",via:"driving"},
+   {m:"walk",min:15,how:"Through the station's south side and out the South exit; Torishige is 5 min beyond, in Yoyogi 2-chome."},
+   {m:"walk",min:10,how:"North along the west side of the tracks to the West exit."},
+   {m:"walk",min:12,how:"Through the underpass to the east side, then across Yasukuni-dori to the lanes behind Hanazono Shrine."},
+   {m:"train",min:30,how:"Walk 8 min to JR Shinjuku, Yamanote line to Shinagawa (about 20 min), Konan exit. A taxi is about 30 min and ¥6,000–7,000."}
   ]},
  {id:"tue",tab:"Tue",date:"Oct 20",title:"Jiyugaoka, Daikanyama kids' shops, Dior, design stops",
   stops:[
@@ -373,14 +386,26 @@ const DAYS=[
   ]}
 ];
 
-const EMO={"HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢"};
+const EMO={"HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢", "KITSUNE": "🍵", "OMOIDE": "🏮", "GOLDEN": "🍸", "TIAS": "🔊", "CONRAN": "🔊"};
 for(const k in S)S[k].e=EMO[k]||"📍";
 const EXTRAS=[
  {cat:"Walk-in dinners (Michelin)",items:[
   {s:"KAGARI",tag:"Bib Gourmand · Mon",note:"Former Michelin Bib Gourmand; famous creamy tori-paitan (chicken) soba. No reservations, just queue (ticket machine, from about ¥1,500). Google Maps: Sun 11:00–21:30, Mon 11:00–22:00. A 5 PM arrival usually means a short wait. Fully casual."},
   {s:"HARUCHAN",tag:"Bib Gourmand 2026 · Sun/Mon",note:"Bib Gourmand in the 2026 Michelin Guide. Light, clear shio (salt) ramen in a small Ginza shop. Counter seating and casual; walk in and wait in line. Michelin lists it open daily 11:00–19:00 and Google Maps shows until 21:00, so aim to arrive before 7 PM."},
   {s:"IRUCA",tag:"Bib Gourmand 2026 · Sun",note:"Bib Gourmand in the 2026 Michelin Guide. Inventive ramen: clam and spiny-lobster broths, a shoyu bowl with porcini and truffle. Counter seating, cards accepted, walk-in queue. Open daily 11:00–19:40; closed Mondays. Easy from Ukai-tei or the hotel on Sunday, or as an early dinner."},
-  {s:"TORISHIGE",tag:"Bib Gourmand 2026 · Mon",note:"Bib Gourmand in the 2026 Michelin Guide. A postwar yakitori stall turned pork-and-beef skewer counter, a 5-minute walk from Shinjuku South exit. Fits Monday after Isetan or Nakano. Mon 17:00–24:00; closed Sundays. Cash only. Counter seats go to walk-ins at opening; it takes phone bookings (+81 3-3379-5188) and fills by 6, so arrive right at 5."}
+ ]},
+ {cat:"Audio (both open after you leave)",items:[
+  {s:"TIAS",tag:"Oct 23–25",note:"Tokyo International Audio Show, the big annual hi-fi show. Free with advance registration. Runs Friday to Sunday, after your Tuesday flight."},
+  {s:"CONRAN",tag:"From Oct 22",note:"'Shadow, Light & Sound' pop-up: a listening room with OJAS (Devon Turnbull) speakers and Karimoku's new audio furniture, B1F. Runs Oct 22 to Dec 29, 11:00–18:00, closed Wednesdays. Opens two days too late."}
+ ]},
+ {cat:"Dropped from Monday",items:[
+  {s:"KAPTAIN",tag:"Closed Mon",note:"Closed Mondays."},
+  {s:"PARA",tag:"Optional",note:"French shoes. Open daily 11:00–20:00, around the corner from Kaptain Sunshine, about 10 min from Kaneko Aoyama."},
+  {s:"D2121",tag:"Optional",note:"Open Mondays 10:00–19:00. Now showing: Learning from Hōjōki (to Jan 11)."},
+  {s:"IMAI",tag:"Dinner alt",note:"Counter yakitori in Jingumae, opens 17:00. If you'd rather eat here, take a taxi to Shinjuku afterwards (15 min)."},
+  {s:"TSUKIJI",tag:"Dropped",note:"Breakfast grazing; dropped for breakfast at the hotel."},
+  {s:"OZEKI",tag:"Dropped",note:"Akari lamps. Weekdays 9:00–17:00 only, so Tuesday morning is the last chance."},
+  {s:"NAKANO",tag:"Dropped",note:"Vintage watches and Mandarake. 5 min from Shinjuku on the Chuo line."}
  ]},
  {cat:"Dinner backups",items:[
   {s:"MASASHI",tag:"Mon alternative",note:"Michelin-starred sushi. Dinner seatings 17:30 and 20:00; closed Wednesdays and Sundays. OMAKASE takes same-day bookings made by noon."},
@@ -404,7 +429,6 @@ const EXTRAS=[
  ]},
  {cat:"Shops that didn't make the cut",items:[
   {s:"AURALEE",tag:"Dropped for time",note:"Open 12:00–20:00. Auralee women's is also on Isetan's 4th floor, which is on Monday's route."},
-  {s:"JMM",tag:"Dropped for time",note:"Jacques Marie Mage's eyewear gallery. Open daily."},
   {s:"SNOW",tag:"Dropped for time",note:"Open 11:00–20:00, a few minutes from Studio D'artisan."},
   {s:"ONITSUKAG",tag:"Optional · Mon",note:"Second Onitsuka Tiger, a few minutes from Monday's Ginza stops if you miss the Omotesando flagship. Listed open 11:00–20:00 daily, with CAFÉ 75 inside (closed Tuesdays). Listings disagree on the exact address, so check the map pin before walking over."},
   {s:"MONTBELL",tag:"Optional",note:"For the camping-style toddler tableware in your saved note. Opens at 11:00. About 10 minutes' walk from the Ginza stops."},
