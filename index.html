@@ -277,6 +277,7 @@ const S={
  G6:{n:"GINZA SIX",a:"The Row 3F · Dior · Celine · Loewe",lat:35.6697,lng:139.7640,q:"GINZA SIX"},
  DSM:{n:"Dover Street Market Ginza",a:"Kaneko Ginza is next door",lat:35.6704,lng:139.7651,q:"Dover Street Market Ginza"},
  MATCHA:{n:"THE MATCHA TOKYO Omotesando",a:"Jingumae 6-chome · matcha café",lat:35.66800,lng:139.70370,q:"THE MATCHA TOKYO OMOTESANDO"},
+ DANTON:{n:"DANTON TOKYO",a:"Jingumae 6-12-17 · Meiji-dori",lat:35.66550,lng:139.70400,q:"DANTON TOKYO 神宮前6-12-17"},
  UOSHIN:{n:"Tempura Uoshin Ebisu",a:"Ebisu Garden Place Tower 38F",lat:35.64270,lng:139.71340,q:"天ぷら 魚新 恵比寿ガーデンプレイスタワー"},
  DONKI:{n:"Don Quijote Shinjuku Kabukicho",a:"Kabukicho 1-16-5 · open 24 hours",lat:35.69430,lng:139.70240,q:"Don Quijote Shinjuku Kabukicho 1-16-5"},
  ISETAN:{n:"Isetan Shinjuku",a:"Shinjuku-sanchome",lat:35.6918,lng:139.7047,q:"Isetan Shinjuku"},
@@ -333,27 +334,29 @@ const DAYS=[
   stops:[
    {s:"HOTEL",t:"10:30",note:"Breakfast at the hotel, then head out."},
    {s:"MOMO",t:"11:00",note:"Opens 11:00. Hemming is free and same-day on jeans bought here. Leave your pair and collect it after lunch, on the way to Kaneko."},
-   {s:"DART",t:"11:30",note:"Opens 11:00. If you buy, take them unhemmed; there is no return visit planned."},
-   {s:"MATCHA",t:"11:50",note:"Matcha latte at a dedicated organic-matcha café: counter downstairs, tables upstairs. Listings disagree on opening (11:00 or noon) and address, so check Google Maps first."},
-   {s:"KIDDY",t:"12:05",note:"Gift for your nephew. Tomica die-cast cars are on 3F. Open 11:00–20:00, tax-free over ¥5,000, gift wrapping available."},
-   {s:"ONITSUKA",t:"12:20",note:"The flagship, on Omotesando avenue. Open 11:00–20:00. Carries the full range, including the pricier Nippon Made line."},
-   {s:"JMM",t:"12:35",note:"Jacques Marie Mage's eyewear gallery. Open daily."},
-   {s:"GANZO",t:"12:50",note:"Gift for Carlos: cordovan and bridle-leather wallets, card cases and key cases. Open 11:00–20:00."},
-   {s:"MAISEN",t:"1:10",note:"Lunch, open 11:00–22:45. Weekday lines move fast and get shorter after 1:30."},
-   {s:"KANEKO",t:"2:15",note:"Frames only; you're doing lenses later. Open 11:00–20:00."},
-   {s:"BROOKS",t:"2:30",note:"Gift for Dad. Opens 11:30. Japan's Brooks Brothers stock includes knitwear you won't see in the US."},
-   {s:"KARI",t:"2:50",note:"Karimoku's design gallery, your priority. Weekdays only; listings say it opens at 12:00 or 1:00 PM and closes at 6:00 PM. Free, no reservation needed."},
-   {s:"MASUNAGA",t:"3:45",note:"Japan's oldest frame maker, handmade in Fukui since 1905; about 150 frames on one wall. Good to compare against Kaneko. Open 11:00–20:00, closed 1st and 3rd Tuesdays."},
-   {s:"FAMILIAR",t:"4:15",note:"Your pick. Classic Japanese babywear, good for your sister's new baby. Open daily 11:00–19:00."},
-   {s:"KBEAMS",t:"4:30",note:"Your pick. BEAMS' kids' shop, two minutes away. Open daily 10:00–19:00."},
-   {s:"MARKEYS",t:"4:50",note:"Your pick. Kids' clothing on 3F of Daikanyama Address, by the station. Open daily 11:00–20:00."},
-   {s:"DIOR",t:"5:10",note:"Open 11:00–19:00. Café Dior is inside if you want a drink before dinner; check its hours."},
+   {s:"DANTON",t:"11:30",note:"French workwear: chore jackets, fleece and down. Open 11:00–20:00."},
+   {s:"DART",t:"11:50",note:"Opens 11:00. If you buy, take them unhemmed; there is no return visit planned."},
+   {s:"MATCHA",t:"12:10",note:"Matcha latte at a dedicated organic-matcha café: counter downstairs, tables upstairs. Listings disagree on opening (11:00 or noon) and address, so check Google Maps first."},
+   {s:"KIDDY",t:"12:25",note:"Gift for your nephew. Tomica die-cast cars are on 3F. Open 11:00–20:00, tax-free over ¥5,000, gift wrapping available."},
+   {s:"ONITSUKA",t:"12:40",note:"The flagship, on Omotesando avenue. Open 11:00–20:00. Carries the full range, including the pricier Nippon Made line."},
+   {s:"JMM",t:"12:55",note:"Jacques Marie Mage's eyewear gallery. Open daily."},
+   {s:"GANZO",t:"1:10",note:"Gift for Carlos: cordovan and bridle-leather wallets, card cases and key cases. Open 11:00–20:00."},
+   {s:"MAISEN",t:"1:30",note:"Lunch, open 11:00–22:45. Weekday lines move fast and get shorter after 1:30."},
+   {s:"KANEKO",t:"2:30",note:"Frames only; you're doing lenses later. Open 11:00–20:00."},
+   {s:"BROOKS",t:"2:45",note:"Gift for Dad. Opens 11:30. Japan's Brooks Brothers stock includes knitwear you won't see in the US."},
+   {s:"KARI",t:"3:05",note:"Karimoku's design gallery, your priority. Weekdays only; listings say it opens at 12:00 or 1:00 PM and closes at 6:00 PM. Free, no reservation needed."},
+   {s:"MASUNAGA",t:"4:00",note:"Japan's oldest frame maker, handmade in Fukui since 1905; about 150 frames on one wall. Good to compare against Kaneko. Open 11:00–20:00, closed 1st and 3rd Tuesdays."},
+   {s:"FAMILIAR",t:"4:30",note:"Your pick. Classic Japanese babywear, good for your sister's new baby. Open daily 11:00–19:00."},
+   {s:"KBEAMS",t:"4:45",note:"Your pick. BEAMS' kids' shop, two minutes away. Open daily 10:00–19:00."},
+   {s:"MARKEYS",t:"5:05",note:"Your pick. Kids' clothing on 3F of Daikanyama Address, by the station. Open daily 11:00–20:00."},
+   {s:"DIOR",t:"5:25",note:"Open 11:00–19:00. Café Dior is inside if you want a drink before dinner; check its hours."},
    {s:"UOSHIN",t:"6:30",note:"Tempura dinner at a counter on the 38th floor, with views over Tokyo. Dinner listed Mon–Fri 17:30–23:00. Book a counter seat for 18:30 by phone, a hotel concierge or an online booking site."},
    {s:"HOTEL",t:"9:00",note:"Back at the hotel."}
   ],
   legs:[
    {m:"taxi",min:20,how:"Taxi to the Omotesando crossing, roughly ¥4,000. By train: JR Yamanote to Shibuya, then the Ginza line to Omotesando, about 25 min.",via:"driving"},
-   {m:"walk",min:15,how:"West along Omotesando avenue toward Harajuku, then into Jingumae 6-chome."},
+   {m:"walk",min:15,how:"West along Omotesando avenue to Meiji-dori, then left toward Shibuya."},
+   {m:"walk",min:4,how:"Back up Meiji-dori and into the Jingumae 6-chome lanes."},
    {m:"walk",min:3,how:"Around the corner in Jingumae 6-chome, near Meiji-dori."},
    {m:"walk",min:3,how:"Back out to Omotesando avenue near Meiji-dori."},
    {m:"walk",min:3,how:"East along Omotesando avenue."},
@@ -393,7 +396,7 @@ const DAYS=[
   ]}
 ];
 
-const EMO={"UOSHIN": "🍤", "HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢", "KITSUNE": "🍵", "OMOIDE": "🏮", "GOLDEN": "🍸", "TIAS": "🔊", "CONRAN": "🔊"};
+const EMO={"DANTON": "🧥", "UOSHIN": "🍤", "HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢", "KITSUNE": "🍵", "OMOIDE": "🏮", "GOLDEN": "🍸", "TIAS": "🔊", "CONRAN": "🔊"};
 for(const k in S)S[k].e=EMO[k]||"📍";
 const EXTRAS=[
  {cat:"Walk-in dinners (Michelin)",items:[
