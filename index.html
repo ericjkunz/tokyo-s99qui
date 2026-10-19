@@ -166,6 +166,12 @@ a.nm:hover{border-bottom-color:currentColor}
 .pinm.hotel{border-color:var(--ink)}
 .pinm.sel{outline:3px solid var(--ink);outline-offset:1px}
 .pinm.dim{opacity:.35}
+/* Stops from the other days: faint, behind everything, not tappable. The selected day's pins sit on top. */
+.pinm{z-index:3}
+.pinx{z-index:2;filter:opacity(.3)}
+.pinx.closed{filter:grayscale(.7) opacity(.3)}
+.pinx.sel{z-index:4;filter:none}
+.ghost{z-index:1;width:20px;height:20px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:11px;line-height:1;border:1.5px solid var(--muted);filter:grayscale(1) opacity(.2);pointer-events:none}
 .maplibregl-popup-content{background:var(--panel);color:var(--ink);font:13px var(--f-body);border-radius:10px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 .maplibregl-popup-content b{font-family:var(--f-display);font-size:14px}
 .maplibregl-popup-tip{border-top-color:var(--panel)!important;border-bottom-color:var(--panel)!important}
@@ -507,8 +513,16 @@ new MutationObserver(reTheme).observe(document.documentElement,{attributes:true,
 let popup=null;
 function showPopup(lngLat,html){if(popup)popup.remove();popup=new maplibregl.Popup({offset:18,closeButton:true,maxWidth:"260px"}).setLngLat(lngLat).setHTML(html).addTo(map)}
 
+let ghosts=[];
+function buildGhosts(){
+  ghosts.forEach(m=>m.remove());ghosts=[];
+  const mine=new Set(day.stops.map(st=>st.s)),done=new Set();
+  DAYS.forEach(d=>{if(d===day)return;d.stops.forEach(st=>{if(mine.has(st.s)||done.has(st.s))return;done.add(st.s);const p=S[st.s];
+    const el=document.createElement("div");el.className="ghost";el.setAttribute("aria-hidden","true");el.textContent=p.e;
+    ghosts.push(new maplibregl.Marker({element:el}).setLngLat([p.lng,p.lat]).addTo(map));})});
+}
 function buildMarkers(){
-  markers.forEach(m=>m.remove());markers=[];
+  markers.forEach(m=>m.remove());markers=[];buildGhosts();
   day.stops.forEach((st,i)=>{const p=S[st.s];
     // stacked duplicates (same place twice in a day): offset slightly
     const el=document.createElement("button");el.className="pinm"+(st.s==="HOTEL"?" hotel":"");el.innerHTML=`<span aria-hidden="true">${p.e}</span>`+(st.s==="HOTEL"?"":`<span class="num">${i+1}</span>`);
