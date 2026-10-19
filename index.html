@@ -277,6 +277,7 @@ const S={
  G6:{n:"GINZA SIX",a:"The Row 3F · Dior · Celine · Loewe",lat:35.6697,lng:139.7640,q:"GINZA SIX"},
  DSM:{n:"Dover Street Market Ginza",a:"Kaneko Ginza is next door",lat:35.6704,lng:139.7651,q:"Dover Street Market Ginza"},
  MATCHA:{n:"THE MATCHA TOKYO Omotesando",a:"Jingumae 6-chome · matcha café",lat:35.66800,lng:139.70370,q:"THE MATCHA TOKYO OMOTESANDO"},
+ UOSHIN:{n:"Tempura Uoshin Ebisu",a:"Ebisu Garden Place Tower 38F",lat:35.64270,lng:139.71340,q:"天ぷら 魚新 恵比寿ガーデンプレイスタワー"},
  DONKI:{n:"Don Quijote Shinjuku Kabukicho",a:"Kabukicho 1-16-5 · open 24 hours",lat:35.69430,lng:139.70240,q:"Don Quijote Shinjuku Kabukicho 1-16-5"},
  ISETAN:{n:"Isetan Shinjuku",a:"Shinjuku-sanchome",lat:35.6918,lng:139.7047,q:"Isetan Shinjuku"},
  NAKANO:{n:"Nakano Broadway",a:"Nakano",lat:35.7095,lng:139.6658,q:"Nakano Broadway"},
@@ -328,7 +329,7 @@ const DAYS=[
    {m:"taxi",min:15,how:"Taxi back to Harajuku via Aoyama-dori, drop-off on Meiji-dori."},
    {m:"walk",min:8,how:"Out to Omotesando avenue. GYRE is the twisting building; take the lift to 5F."}
   ]},
- {id:"mon",tab:"Mon",date:"Oct 19",title:"Denim first, Omotesando, Karimoku, Shinjuku alleys",
+ {id:"mon",tab:"Mon",date:"Oct 19",title:"Denim first, Omotesando, Karimoku, Daikanyama and Ebisu",
   stops:[
    {s:"HOTEL",t:"10:30",note:"Breakfast at the hotel, then head out."},
    {s:"MOMO",t:"11:00",note:"Opens 11:00. Hemming is free and same-day on jeans bought here. Leave your pair and collect it after lunch, on the way to Kaneko."},
@@ -343,11 +344,12 @@ const DAYS=[
    {s:"BROOKS",t:"2:30",note:"Gift for Dad. Opens 11:30. Japan's Brooks Brothers stock includes knitwear you won't see in the US."},
    {s:"KARI",t:"2:50",note:"Karimoku's design gallery, your priority. Weekdays only; listings say it opens at 12:00 or 1:00 PM and closes at 6:00 PM. Free, no reservation needed."},
    {s:"MASUNAGA",t:"3:45",note:"Japan's oldest frame maker, handmade in Fukui since 1905; about 150 frames on one wall. Good to compare against Kaneko. Open 11:00–20:00, closed 1st and 3rd Tuesdays."},
-   {s:"TORISHIGE",t:"4:55",note:"Dinner. Bib Gourmand pork-and-beef skewer counter, opens 17:00. Cash only. It fills by 6, so be there at opening, or phone a booking: +81 3-3379-5188."},
-   {s:"OMOIDE",t:"6:30",note:"Lantern-lit alley of tiny yakitori stalls by the tracks. Walk it end to end; stop for a beer if a counter has room."},
-   {s:"DONKI",t:"6:50",note:"Snacks, KitKat flavours, beauty and gag gifts across several crammed floors. Open 24 hours, so you can also come back after the bars. Tax-free over ¥5,000; bring your passport. Not the newer Southeast Exit annex."},
-   {s:"GOLDEN",t:"7:30",note:"Six narrow lanes of tiny bars. Many open around 7–8 PM and charge a ¥500–1,500 cover; signs on the door say if foreigners or cover charges are welcome. Small parties do best."},
-   {s:"HOTEL",t:"9:30",note:"Back at the hotel."}
+   {s:"FAMILIAR",t:"4:15",note:"Your pick. Classic Japanese babywear, good for your sister's new baby. Open daily 11:00–19:00."},
+   {s:"KBEAMS",t:"4:30",note:"Your pick. BEAMS' kids' shop, two minutes away. Open daily 10:00–19:00."},
+   {s:"MARKEYS",t:"4:50",note:"Your pick. Kids' clothing on 3F of Daikanyama Address, by the station. Open daily 11:00–20:00."},
+   {s:"DIOR",t:"5:10",note:"Open 11:00–19:00. Café Dior is inside if you want a drink before dinner; check its hours."},
+   {s:"UOSHIN",t:"6:30",note:"Tempura dinner at a counter on the 38th floor, with views over Tokyo. Dinner listed Mon–Fri 17:30–23:00. Book a counter seat for 18:30 by phone, a hotel concierge or an online booking site."},
+   {s:"HOTEL",t:"9:00",note:"Back at the hotel."}
   ],
   legs:[
    {m:"taxi",min:20,how:"Taxi to the Omotesando crossing, roughly ¥4,000. By train: JR Yamanote to Shibuya, then the Ginza line to Omotesando, about 25 min.",via:"driving"},
@@ -362,24 +364,21 @@ const DAYS=[
    {m:"walk",min:4,how:"Down Omotesando's Minami-Aoyama side toward Kotto-dori."},
    {m:"walk",min:10,how:"South down Kotto-dori to Nishi-Azabu 2-chome."},
    {m:"taxi",min:8,how:"Taxi up Gaien-nishi-dori to Aoyama-dori and Kita-Aoyama 2-chome. Walking is about 20 min.",via:"driving"},
-   {m:"taxi",min:20,how:"Taxi via Gaien-nishi-dori and Meiji-dori to Yoyogi 2-chome, by Shinjuku's South exit. You'll arrive before the 5:00 opening; that's when the counter seats go.",via:"driving"},
-   {m:"walk",min:10,how:"North along the west side of the tracks to the West exit."},
-   {m:"walk",min:8,how:"Through the underpass to the east side, then along Yasukuni-dori to the Kabukicho side."},
-   {m:"walk",min:5,how:"East along Yasukuni-dori to the lanes behind Hanazono Shrine."},
-   {m:"train",min:30,how:"Walk 8 min to JR Shinjuku, Yamanote line to Shinagawa (about 20 min), Konan exit. A taxi is about 30 min and ¥6,000–7,000."}
+   {m:"taxi",min:15,how:"Taxi via Aoyama-dori, Meiji-dori and Kyu-Yamate-dori to Daikanyama Sarugakucho.",via:"driving"},
+   {m:"walk",min:3,how:"Along Kyu-Yamate-dori."},
+   {m:"walk",min:4,how:"Back toward Daikanyama station; Address Dixsept is the low building next to it."},
+   {m:"walk",min:7,how:"Back out to Kyu-Yamate-dori and along to Sarugakucho 8."},
+   {m:"walk",min:15,how:"Down the hill to Ebisu, then along the Skywalk to Ebisu Garden Place; take the tower lifts to 38F. A taxi is 5 min."},
+   {m:"train",min:20,how:"Walk 8 min back along the Skywalk to JR Ebisu, Yamanote line to Shinagawa (about 12 min), Konan exit. A taxi is about 15 min."},
   ]},
- {id:"tue",tab:"Tue",date:"Oct 20",title:"Jiyugaoka, Daikanyama kids' shops, Dior, Paraboot",
+ {id:"tue",tab:"Tue",date:"Oct 20",title:"Jiyugaoka, Paraboot, MoN Takanawa",
   stops:[
    {s:"HOTEL",t:"10:15",note:"Check out and leave bags with the 26F front desk until the afternoon."},
    {s:"MOON",t:"11:00",note:"MOONSTAR opens 11:00. IDÉE next door opens 11:30 on weekdays."},
    {s:"RELUME",t:"11:20",note:"For the Barbour × relume denim Spey jacket (¥62,700, M/L, Black or Navy). Opens around 11:00. Stock is thin, so DM @js_relume to check your size and ask them to hold one. Ask for the denim Spey by name: there's also a different Spey Combi."},
-   {s:"KATA",t:"11:40",note:"Japanese gifts and souvenirs. Opens 11:00."},
-   {s:"FAMILIAR",t:"12:20",note:"Your pick. Classic Japanese babywear, good for your sister's new baby. Open daily 11:00–19:00."},
-   {s:"KBEAMS",t:"12:35",note:"Your pick. BEAMS' kids' shop, two minutes away. Open daily 10:00–19:00."},
-   {s:"MARKEYS",t:"12:55",note:"Your pick. Kids' clothing on 3F of Daikanyama Address, by the station. Open daily 11:00–20:00."},
-   {s:"DIOR",t:"1:15",note:"Open 11:00–19:00. Book Café Dior online by 11 PM Monday for a 1:30 lunch."},
-   {s:"PARA",t:"2:45",note:"French shoes. Open daily 11:00–20:00."},
-   {s:"MON",t:"3:30",note:"Open today; it only closes on the 2nd Tuesday. You have over an hour; leave by 4:45."},
+   {s:"KATA",t:"11:40",note:"Japanese gifts and souvenirs. Opens 11:00. Have lunch in Jiyugaoka before heading off."},
+   {s:"PARA",t:"1:45",note:"French shoes. Open daily 11:00–20:00."},
+   {s:"MON",t:"2:45",note:"Open today; it only closes on the 2nd Tuesday. No rush: leave by 4:45 to collect your bags."},
    {s:"HOTEL",t:"5:00",note:"Collect bags from the front desk. Leave by 5:15."},
    {s:"HND",t:"5:45",note:"Flight at 8:05 PM. Check your boarding pass for the terminal."}
   ],
@@ -387,18 +386,14 @@ const DAYS=[
    {m:"train",min:25,how:"JR Keihin-Tohoku one stop to Oimachi, then the Tokyu Oimachi line express to Jiyugaoka. Taxi is about 25 min."},
    {m:"walk",min:3,how:"A few blocks through the streets north of the station."},
    {m:"walk",min:6,how:"South across the tracks to Okusawa."},
-   {m:"train",min:20,how:"Tokyu Toyoko line local from Jiyugaoka to Daikanyama (5 stops, about 12 min), then a 4 min walk to Sarugakucho."},
-   {m:"walk",min:3,how:"Along Kyu-Yamate-dori."},
-   {m:"walk",min:4,how:"Back toward Daikanyama station; Address Dixsept is the low building next to it."},
-   {m:"walk",min:7,how:"Back out to Kyu-Yamate-dori and along to Sarugakucho 8."},
-   {m:"taxi",min:12,how:"Taxi via Komazawa-dori and Roppongi-dori to Minami-Aoyama 6-chome.",via:"driving"},
+   {m:"taxi",min:25,how:"Taxi via Komazawa-dori and Roppongi-dori to Minami-Aoyama 6-chome. By train: Toyoko line to Shibuya, then the Ginza line to Omotesando and a 10 min walk.",via:"driving"},
    {m:"taxi",min:20,how:"Taxi south via Gaien-nishi-dori, Sakurada-dori and Daiichi Keihin to Takanawa Gateway City.",via:"driving"},
    {m:"walk",min:15,how:"South through Takanawa Gateway City to Shinagawa Station, then out the Konan exit. A taxi is 5 min."},
    {m:"taxi",min:30,how:"Taxi from the hotel with your luggage. Metered, roughly ¥6,000–8,000 with tolls. Allow extra time for Tuesday evening traffic.",via:"driving"}
   ]}
 ];
 
-const EMO={"HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢", "KITSUNE": "🍵", "OMOIDE": "🏮", "GOLDEN": "🍸", "TIAS": "🔊", "CONRAN": "🔊"};
+const EMO={"UOSHIN": "🍤", "HND": "✈️", "HOTEL": "🏨", "MAISEN": "🐖", "PBJ": "👖", "KANEKO": "👓", "KANEKO2": "👓", "AURALEE": "👗", "KAPTAIN": "🧥", "JMM": "🕶️", "SNOW": "⛺", "PARA": "👞", "D2121": "🖼️", "KARI": "🪑", "FAMIMA": "🏪", "BROOKS": "👔", "GANZO": "👜", "GANZOG": "👜", "KIDDY": "🚗", "BIC": "⌚", "SATORU": "🍣", "YOKOTA": "🍤", "KONDO": "🍤", "TENSHIBUYA": "🍣", "SHINSUKE": "🍶", "YAKUMO": "🍵", "BILLS": "🥞", "SOUFFLE": "☕", "BANK": "🥐", "CENTRE": "🍞", "KUROKAWA": "🍣", "TACUBO": "☕", "TENRYU": "🥟", "OBORO": "🍜", "MONTBELL": "⛺", "HINOYA": "👖", "BEAMS": "👕", "SEIKO": "⌚", "NEZU": "🏛️", "MSC": "🍰", "BEARS": "👖", "BONPOINT": "🧸", "MITSU": "🛍️", "MOMO": "👖", "DART": "👖", "PICKUP": "✂️", "BLINC": "👓", "IMAI": "🍢", "UKAI": "🥩", "TSUKIJI": "🐟", "OZEKI": "💡", "MIDORI": "🍣", "HERMES": "🧣", "G6": "🛍️", "DSM": "🛍️", "ISETAN": "🛍️", "NAKANO": "⌚", "MASASHI": "🍣", "MOON": "👟", "KATA": "🎁", "DIOR": "👗", "MON": "🏛️", "FAMILIAR": "🧸", "KBEAMS": "🧸", "MARKEYS": "🧸", "RIBERA": "🥩", "KAGARI": "🍜", "HARUCHAN": "🍜", "IRUCA": "🍜", "TORISHIGE": "🍢", "KITSUNE": "🍵", "OMOIDE": "🏮", "GOLDEN": "🍸", "TIAS": "🔊", "CONRAN": "🔊"};
 for(const k in S)S[k].e=EMO[k]||"📍";
 const EXTRAS=[
  {cat:"Walk-in dinners (Michelin)",items:[
@@ -444,6 +439,9 @@ const EXTRAS=[
   {s:"ONITSUKAG",tag:"Optional · Mon",note:"Second Onitsuka Tiger, a few minutes from Monday's Ginza stops if you miss the Omotesando flagship. Listed open 11:00–20:00 daily, with CAFÉ 75 inside (closed Tuesdays). Listings disagree on the exact address, so check the map pin before walking over."},
   {s:"MONTBELL",tag:"Optional",note:"For the camping-style toddler tableware in your saved note. Opens at 11:00. About 10 minutes' walk from the Ginza stops."},
   {s:"BLINC",tag:"Dropped",note:"Multi-brand eyewear shop near Gaienmae. Dropped as out of the way, with Kaneko and Jacques Marie Mage already on the route."},
+  {s:"OMOIDE",tag:"Dropped",note:"Lantern-lit alley of tiny yakitori stalls by Shinjuku's West exit. Dropped for the Ebisu evening."},
+  {s:"GOLDEN",tag:"Dropped",note:"Six narrow lanes of tiny bars by Hanazono Shrine. Dropped for the Ebisu evening."},
+  {s:"DONKI",tag:"Dropped",note:"Open 24 hours, so still easy to fit in if you're near Shinjuku. Tax-free over ¥5,000 with your passport."},
   {s:"BEAMS",tag:"Not checked",note:"From your saved list. A few minutes from Isetan Shinjuku."},
   {s:"HINOYA",tag:"Off route",note:"Denim and Americana in Ueno's Ameyoko market. Open 10:30–20:10 daily."}
  ]},
