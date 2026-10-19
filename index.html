@@ -46,7 +46,7 @@ h1 small{display:block;font-family:var(--f-mono);font-weight:500;font-size:12px;
 .sw.train{border-color:var(--accent)}
 .sw.taxi{border-top-style:dashed;border-color:var(--taxi)}
 
-.tabs{display:flex;gap:6px;margin:16px 0 14px;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;margin:8px 0 6px;padding:8px 0;flex-wrap:wrap;position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:var(--bg)}
 .tab{font:inherit;cursor:pointer;border:1px solid var(--hair);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 16px;display:flex;gap:10px;align-items:baseline}
 .tab b{font-family:var(--f-display);font-weight:700;font-size:15px}
 .tab span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
@@ -55,7 +55,7 @@ h1 small{display:block;font-family:var(--f-mono);font-weight:500;font-size:12px;
 .tab:focus-visible,.leg:focus-visible,.stop:focus-visible,.mapbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;align-items:start}
-.mapbox{position:sticky;top:max(12px,env(safe-area-inset-top,0px));height:calc(100vh - 140px);min-height:420px;border:1px solid var(--hair);border-radius:14px;overflow:hidden;background:var(--water)}
+.mapbox{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--tabs-h,56px) + 6px);height:calc(100vh - var(--tabs-h,56px) - 40px);min-height:420px;border:1px solid var(--hair);border-radius:14px;overflow:hidden;background:var(--water)}
 #base{position:absolute;inset:0;width:100%;height:100%;display:block}
 #map{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 #map.drag{cursor:grabbing}
@@ -127,7 +127,9 @@ ol.tl{list-style:none;margin:0;padding:0}
 @media (max-width:860px){
   .mapnote{font-size:10.5px;left:6px;bottom:6px;padding:2px 6px}
   .grid{grid-template-columns:minmax(0,1fr)}
-  .mapbox{height:44vh;min-height:300px;max-height:460px;z-index:5;top:env(safe-area-inset-top,0px);border-radius:0 0 14px 14px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+  .tabs{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));margin-bottom:0;flex-wrap:nowrap}
+  .tab{flex:1 1 0;min-width:0;justify-content:center;padding:7px 8px;gap:6px}
+  .mapbox{height:44vh;min-height:300px;max-height:460px;z-index:5;top:calc(env(safe-area-inset-top,0px) + var(--tabs-h,56px));border-radius:0 0 14px 14px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
   body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
@@ -615,6 +617,10 @@ map.on("load",()=>{buildExtras();setDay(start);
 });
 window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(h!==day.id&&DAYS.some(d=>d.id===h))setDay(h)});
 buildTabs();
+// Keep the sticky map just below the sticky day tabs.
+const tabsEl=document.getElementById("tabs");
+const setTabsH=()=>document.documentElement.style.setProperty("--tabs-h",tabsEl.offsetHeight+"px");
+setTabsH();if(window.ResizeObserver)new ResizeObserver(setTabsH).observe(tabsEl);else window.addEventListener("resize",setTabsH);
 </script>
 
 </body>
